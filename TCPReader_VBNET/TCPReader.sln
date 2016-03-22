@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TCPReader", "TCPReader\TCPReader.vbproj", "{588D28C5-22ED-4CE9-B948-72FE7A63813A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{588D28C5-22ED-4CE9-B948-72FE7A63813A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{588D28C5-22ED-4CE9-B948-72FE7A63813A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{588D28C5-22ED-4CE9-B948-72FE7A63813A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{588D28C5-22ED-4CE9-B948-72FE7A63813A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
