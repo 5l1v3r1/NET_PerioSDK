@@ -2754,11 +2754,10 @@ namespace PerioTCPRdr
                             tempRecs.raDeviceRecs[i+TransferredCount].CardID = CardId;
                             tempRecs.raDeviceRecs[i+TransferredCount].DoorNo     = RecData[(RecordSize*i)+8];
                             tempRecs.raDeviceRecs[i+TransferredCount].RecordType = RecData[(RecordSize*i)+9];
-                            tempRecs.raDeviceRecs[i+TransferredCount].GcType     = RecData[(RecordSize * i) + 10];
-                            //tempRecs.raDeviceRecs[i+TransferredCount].RFU[0]     = RecData[(RecordSize*i)+10];
-                            //tempRecs.raDeviceRecs[i+TransferredCount].RFU[1]     = RecData[(RecordSize*i)+11];
-                            tempRecs.raDeviceRecs[i+TransferredCount].TimeDate = prBytesToDateTimeEx(RecData,(RecordSize * i) + 12);
-                            
+                            tempRecs.raDeviceRecs[i + TransferredCount].TimeDate = prBytesToDateTimeEx(RecData, (RecordSize * i) + 10);
+                            //tempRecs.raDeviceRecs[i+TransferredCount].RFU[0]     = RecData[(RecordSize*i)+16];
+                            //tempRecs.raDeviceRecs[i+TransferredCount].RFU[1]     = RecData[(RecordSize*i)+17];
+
                         }
                         TransferredCount = TransferredCount + ReceivedCount;
                         TempStartFrom = (TempStartFrom + ReceivedCount);

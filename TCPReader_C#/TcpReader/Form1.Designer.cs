@@ -541,10 +541,16 @@
             this.textBox32 = new System.Windows.Forms.TextBox();
             this.button39 = new System.Windows.Forms.Button();
             this.tbpYmk = new System.Windows.Forms.TabPage();
+            this.button45 = new System.Windows.Forms.Button();
+            this.button44 = new System.Windows.Forms.Button();
+            this.button41 = new System.Windows.Forms.Button();
+            this.button40 = new System.Windows.Forms.Button();
+            this.button36 = new System.Windows.Forms.Button();
             this.btnKontorFiyatListesi = new System.Windows.Forms.Button();
             this.button31 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
             this.groupBox22 = new System.Windows.Forms.GroupBox();
+            this.cmbOgunDisindaOkuyucuNeYapsin = new System.Windows.Forms.ComboBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.button33 = new System.Windows.Forms.Button();
             this.btnYemekhaneAyariGonder = new System.Windows.Forms.Button();
@@ -555,6 +561,7 @@
             this.txtYemekhaneIstasyon = new System.Windows.Forms.NumericUpDown();
             this.txtYemekhaneKartSektor = new System.Windows.Forms.NumericUpDown();
             this.txtYemekhaneSeciliFiyatListesi = new System.Windows.Forms.NumericUpDown();
+            this.label195 = new System.Windows.Forms.Label();
             this.label159 = new System.Windows.Forms.Label();
             this.label158 = new System.Windows.Forms.Label();
             this.label157 = new System.Windows.Forms.Label();
@@ -641,13 +648,6 @@
             this.btnUDPbaslat = new System.Windows.Forms.Button();
             this.dtTimer = new System.Windows.Forms.Timer(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.button36 = new System.Windows.Forms.Button();
-            this.button40 = new System.Windows.Forms.Button();
-            this.button41 = new System.Windows.Forms.Button();
-            this.button44 = new System.Windows.Forms.Button();
-            this.button45 = new System.Windows.Forms.Button();
-            this.label195 = new System.Windows.Forms.Label();
-            this.cmbOgunDisindaOkuyucuNeYapsin = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.tabCihazGenelBilgileri.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -830,7 +830,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1116, 767);
+            this.panel1.Size = new System.Drawing.Size(1116, 741);
             this.panel1.TabIndex = 2;
             // 
             // tabCihazGenelBilgileri
@@ -854,7 +854,7 @@
             this.tabCihazGenelBilgileri.Name = "tabCihazGenelBilgileri";
             this.tabCihazGenelBilgileri.SelectedIndex = 0;
             this.tabCihazGenelBilgileri.ShowToolTips = true;
-            this.tabCihazGenelBilgileri.Size = new System.Drawing.Size(1116, 681);
+            this.tabCihazGenelBilgileri.Size = new System.Drawing.Size(1116, 655);
             this.tabCihazGenelBilgileri.TabIndex = 4;
             this.tabCihazGenelBilgileri.SelectedIndexChanged += new System.EventHandler(this.tabControl2_SelectedIndexChanged);
             // 
@@ -917,7 +917,7 @@
             this.tbpDeviceGeneralSettings.Location = new System.Drawing.Point(4, 22);
             this.tbpDeviceGeneralSettings.Name = "tbpDeviceGeneralSettings";
             this.tbpDeviceGeneralSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tbpDeviceGeneralSettings.Size = new System.Drawing.Size(1108, 655);
+            this.tbpDeviceGeneralSettings.Size = new System.Drawing.Size(1108, 629);
             this.tbpDeviceGeneralSettings.TabIndex = 0;
             this.tbpDeviceGeneralSettings.Text = "Cihaz Genel Ayarları";
             this.tbpDeviceGeneralSettings.UseVisualStyleBackColor = true;
@@ -5421,7 +5421,7 @@
             this.tsInOutValues.Location = new System.Drawing.Point(4, 22);
             this.tsInOutValues.Name = "tsInOutValues";
             this.tsInOutValues.Padding = new System.Windows.Forms.Padding(3);
-            this.tsInOutValues.Size = new System.Drawing.Size(1108, 655);
+            this.tsInOutValues.Size = new System.Drawing.Size(1108, 629);
             this.tsInOutValues.TabIndex = 6;
             this.tsInOutValues.Text = "Giriş Çıkış Bilgileri";
             this.tsInOutValues.UseVisualStyleBackColor = true;
@@ -5473,7 +5473,7 @@
             // richTextBoxRecs
             // 
             this.richTextBoxRecs.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.richTextBoxRecs.Location = new System.Drawing.Point(3, 319);
+            this.richTextBoxRecs.Location = new System.Drawing.Point(3, 293);
             this.richTextBoxRecs.Name = "richTextBoxRecs";
             this.richTextBoxRecs.Size = new System.Drawing.Size(1102, 333);
             this.richTextBoxRecs.TabIndex = 53;
@@ -6725,6 +6725,56 @@
             this.tbpYmk.Text = "Yemekhane";
             this.tbpYmk.UseVisualStyleBackColor = true;
             // 
+            // button45
+            // 
+            this.button45.Location = new System.Drawing.Point(380, 311);
+            this.button45.Name = "button45";
+            this.button45.Size = new System.Drawing.Size(188, 41);
+            this.button45.TabIndex = 139;
+            this.button45.Text = "Öğün İzinleri Tablosu";
+            this.button45.UseVisualStyleBackColor = true;
+            this.button45.Click += new System.EventHandler(this.button45_Click);
+            // 
+            // button44
+            // 
+            this.button44.Location = new System.Drawing.Point(380, 266);
+            this.button44.Name = "button44";
+            this.button44.Size = new System.Drawing.Size(188, 38);
+            this.button44.TabIndex = 138;
+            this.button44.Text = "Aylık Kişi Hak Tablosu";
+            this.button44.UseVisualStyleBackColor = true;
+            this.button44.Click += new System.EventHandler(this.button44_Click);
+            // 
+            // button41
+            // 
+            this.button41.Location = new System.Drawing.Point(380, 222);
+            this.button41.Name = "button41";
+            this.button41.Size = new System.Drawing.Size(188, 38);
+            this.button41.TabIndex = 137;
+            this.button41.Text = "Haftalık Hak Tablosu";
+            this.button41.UseVisualStyleBackColor = true;
+            this.button41.Click += new System.EventHandler(this.button41_Click);
+            // 
+            // button40
+            // 
+            this.button40.Location = new System.Drawing.Point(380, 178);
+            this.button40.Name = "button40";
+            this.button40.Size = new System.Drawing.Size(188, 38);
+            this.button40.TabIndex = 136;
+            this.button40.Text = "Statik Hak Tablosu";
+            this.button40.UseVisualStyleBackColor = true;
+            this.button40.Click += new System.EventHandler(this.button40_Click);
+            // 
+            // button36
+            // 
+            this.button36.Location = new System.Drawing.Point(380, 130);
+            this.button36.Name = "button36";
+            this.button36.Size = new System.Drawing.Size(188, 42);
+            this.button36.TabIndex = 135;
+            this.button36.Text = "Personel Komut Listesi";
+            this.button36.UseVisualStyleBackColor = true;
+            this.button36.Click += new System.EventHandler(this.button36_Click);
+            // 
             // btnKontorFiyatListesi
             // 
             this.btnKontorFiyatListesi.Location = new System.Drawing.Point(380, 90);
@@ -6783,6 +6833,18 @@
             this.groupBox22.TabIndex = 0;
             this.groupBox22.TabStop = false;
             this.groupBox22.Text = "Ayarlar";
+            // 
+            // cmbOgunDisindaOkuyucuNeYapsin
+            // 
+            this.cmbOgunDisindaOkuyucuNeYapsin.FormattingEnabled = true;
+            this.cmbOgunDisindaOkuyucuNeYapsin.Items.AddRange(new object[] {
+            "Kart Okumasın",
+            "Kart Okusun Öğün dışı Desin",
+            "Kart Okusun Access geçişine izin versin"});
+            this.cmbOgunDisindaOkuyucuNeYapsin.Location = new System.Drawing.Point(169, 237);
+            this.cmbOgunDisindaOkuyucuNeYapsin.Name = "cmbOgunDisindaOkuyucuNeYapsin";
+            this.cmbOgunDisindaOkuyucuNeYapsin.Size = new System.Drawing.Size(121, 21);
+            this.cmbOgunDisindaOkuyucuNeYapsin.TabIndex = 18;
             // 
             // checkBox1
             // 
@@ -6864,6 +6926,15 @@
             this.txtYemekhaneSeciliFiyatListesi.Name = "txtYemekhaneSeciliFiyatListesi";
             this.txtYemekhaneSeciliFiyatListesi.Size = new System.Drawing.Size(120, 20);
             this.txtYemekhaneSeciliFiyatListesi.TabIndex = 8;
+            // 
+            // label195
+            // 
+            this.label195.AutoSize = true;
+            this.label195.Location = new System.Drawing.Point(6, 241);
+            this.label195.Name = "label195";
+            this.label195.Size = new System.Drawing.Size(166, 13);
+            this.label195.TabIndex = 7;
+            this.label195.Text = "Öğün Dışında Okuyu Ne Yapsın : ";
             // 
             // label159
             // 
@@ -7604,9 +7675,9 @@
             // 
             this.panel2.Controls.Add(this.tabControl1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel2.Location = new System.Drawing.Point(1179, 0);
+            this.panel2.Location = new System.Drawing.Point(994, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(362, 767);
+            this.panel2.Size = new System.Drawing.Size(362, 741);
             this.panel2.TabIndex = 3;
             // 
             // tabControl1
@@ -7617,7 +7688,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(362, 767);
+            this.tabControl1.Size = new System.Drawing.Size(362, 741);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
@@ -7627,7 +7698,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(354, 741);
+            this.tabPage1.Size = new System.Drawing.Size(354, 715);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Uygulama Logları";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -7655,7 +7726,7 @@
             // appLog
             // 
             this.appLog.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.appLog.Location = new System.Drawing.Point(3, 212);
+            this.appLog.Location = new System.Drawing.Point(3, 186);
             this.appLog.Name = "appLog";
             this.appLog.Size = new System.Drawing.Size(348, 526);
             this.appLog.TabIndex = 0;
@@ -7763,82 +7834,11 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // button36
-            // 
-            this.button36.Location = new System.Drawing.Point(380, 130);
-            this.button36.Name = "button36";
-            this.button36.Size = new System.Drawing.Size(188, 42);
-            this.button36.TabIndex = 135;
-            this.button36.Text = "Personel Komut Listesi";
-            this.button36.UseVisualStyleBackColor = true;
-            this.button36.Click += new System.EventHandler(this.button36_Click);
-            // 
-            // button40
-            // 
-            this.button40.Location = new System.Drawing.Point(380, 178);
-            this.button40.Name = "button40";
-            this.button40.Size = new System.Drawing.Size(188, 38);
-            this.button40.TabIndex = 136;
-            this.button40.Text = "Statik Hak Tablosu";
-            this.button40.UseVisualStyleBackColor = true;
-            this.button40.Click += new System.EventHandler(this.button40_Click);
-            // 
-            // button41
-            // 
-            this.button41.Location = new System.Drawing.Point(380, 222);
-            this.button41.Name = "button41";
-            this.button41.Size = new System.Drawing.Size(188, 38);
-            this.button41.TabIndex = 137;
-            this.button41.Text = "Haftalık Hak Tablosu";
-            this.button41.UseVisualStyleBackColor = true;
-            this.button41.Click += new System.EventHandler(this.button41_Click);
-            // 
-            // button44
-            // 
-            this.button44.Location = new System.Drawing.Point(380, 266);
-            this.button44.Name = "button44";
-            this.button44.Size = new System.Drawing.Size(188, 38);
-            this.button44.TabIndex = 138;
-            this.button44.Text = "Aylık Kişi Hak Tablosu";
-            this.button44.UseVisualStyleBackColor = true;
-            this.button44.Click += new System.EventHandler(this.button44_Click);
-            // 
-            // button45
-            // 
-            this.button45.Location = new System.Drawing.Point(380, 311);
-            this.button45.Name = "button45";
-            this.button45.Size = new System.Drawing.Size(188, 41);
-            this.button45.TabIndex = 139;
-            this.button45.Text = "Öğün İzinleri Tablosu";
-            this.button45.UseVisualStyleBackColor = true;
-            this.button45.Click += new System.EventHandler(this.button45_Click);
-            // 
-            // label195
-            // 
-            this.label195.AutoSize = true;
-            this.label195.Location = new System.Drawing.Point(6, 241);
-            this.label195.Name = "label195";
-            this.label195.Size = new System.Drawing.Size(166, 13);
-            this.label195.TabIndex = 7;
-            this.label195.Text = "Öğün Dışında Okuyu Ne Yapsın : ";
-            // 
-            // cmbOgunDisindaOkuyucuNeYapsin
-            // 
-            this.cmbOgunDisindaOkuyucuNeYapsin.FormattingEnabled = true;
-            this.cmbOgunDisindaOkuyucuNeYapsin.Items.AddRange(new object[] {
-            "Kart Okumasın",
-            "Kart Okusun Öğün dışı Desin",
-            "Kart Okusun Access geçişine izin versin"});
-            this.cmbOgunDisindaOkuyucuNeYapsin.Location = new System.Drawing.Point(169, 237);
-            this.cmbOgunDisindaOkuyucuNeYapsin.Name = "cmbOgunDisindaOkuyucuNeYapsin";
-            this.cmbOgunDisindaOkuyucuNeYapsin.Size = new System.Drawing.Size(121, 21);
-            this.cmbOgunDisindaOkuyucuNeYapsin.TabIndex = 18;
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1541, 767);
+            this.ClientSize = new System.Drawing.Size(1356, 741);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "frmMain";
