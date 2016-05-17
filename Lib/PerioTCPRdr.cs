@@ -2861,11 +2861,9 @@ namespace PerioTCPRdr
                                 // Record Type
                                 notConfRecs.raDeviceRecs[i+TransferredCount].RecordType = RecData[(RecordSize*i)+9];
                                 // RFU
-                                //notConfRecs.raDeviceRecs[i+TransferredCount].RFU[0] = RecData[(RecordSize*i)+10];
-                                //notConfRecs.raDeviceRecs[i+TransferredCount].RFU[1] = RecData[(RecordSize*i)+11];
                                 // Date Time
                                 notConfRecs.raDeviceRecs[i+TransferredCount].TimeDate
-                                    = prBytesToDateTimeEx(RecData,(RecordSize * i) + 12);
+                                    = prBytesToDateTimeEx(RecData,(RecordSize * i) + 10);
                             }
                             iErr = ConfirmRecs((byte)notConfRecs.Count);
                             if (iErr == 0)
