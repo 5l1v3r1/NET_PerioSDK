@@ -376,6 +376,9 @@
             this.labelGuvenlikBolgeNo = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.btnPersTZMode = new System.Windows.Forms.Button();
+            this.lblInputDuration = new System.Windows.Forms.Label();
+            this.cbPersTZMode = new System.Windows.Forms.ComboBox();
             this.edtGenelAyarlarZamanKisitTablosuEtkin = new System.Windows.Forms.CheckBox();
             this.button20 = new System.Windows.Forms.Button();
             this.button19 = new System.Windows.Forms.Button();
@@ -648,6 +651,13 @@
             this.btnUDPbaslat = new System.Windows.Forms.Button();
             this.dtTimer = new System.Windows.Forms.Timer(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.groupBox27 = new System.Windows.Forms.GroupBox();
+            this.label196 = new System.Windows.Forms.Label();
+            this.label197 = new System.Windows.Forms.Label();
+            this.edtStatusMode = new System.Windows.Forms.NumericUpDown();
+            this.edtStatusModeType = new System.Windows.Forms.NumericUpDown();
+            this.btnSendStatusMode = new System.Windows.Forms.Button();
+            this.btnGetStatusMode = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.tabCihazGenelBilgileri.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -821,6 +831,9 @@
             this.udPlog.SuspendLayout();
             this.groupBox24.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtUdpPortNumber)).BeginInit();
+            this.groupBox27.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.edtStatusMode)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.edtStatusModeType)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -1664,7 +1677,7 @@
             0,
             0});
             this.edtCihazNo.Name = "edtCihazNo";
-            this.edtCihazNo.Size = new System.Drawing.Size(120, 20);
+            this.edtCihazNo.Size = new System.Drawing.Size(57, 20);
             this.edtCihazNo.TabIndex = 2;
             this.edtCihazNo.Value = new decimal(new int[] {
             6565,
@@ -1675,7 +1688,7 @@
             // label50
             // 
             this.label50.AutoSize = true;
-            this.label50.Location = new System.Drawing.Point(16, 27);
+            this.label50.Location = new System.Drawing.Point(16, 23);
             this.label50.Name = "label50";
             this.label50.Size = new System.Drawing.Size(53, 13);
             this.label50.TabIndex = 1;
@@ -1942,7 +1955,7 @@
             this.tsCominicationSettings.Location = new System.Drawing.Point(4, 22);
             this.tsCominicationSettings.Name = "tsCominicationSettings";
             this.tsCominicationSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tsCominicationSettings.Size = new System.Drawing.Size(1108, 655);
+            this.tsCominicationSettings.Size = new System.Drawing.Size(1108, 629);
             this.tsCominicationSettings.TabIndex = 1;
             this.tsCominicationSettings.Text = "Haberleşme Ayarları";
             this.tsCominicationSettings.UseVisualStyleBackColor = true;
@@ -2513,7 +2526,7 @@
             this.tsMfrKeyTable.Location = new System.Drawing.Point(4, 22);
             this.tsMfrKeyTable.Name = "tsMfrKeyTable";
             this.tsMfrKeyTable.Padding = new System.Windows.Forms.Padding(3);
-            this.tsMfrKeyTable.Size = new System.Drawing.Size(1108, 655);
+            this.tsMfrKeyTable.Size = new System.Drawing.Size(1108, 629);
             this.tsMfrKeyTable.TabIndex = 2;
             this.tsMfrKeyTable.Text = "Mifare Şifre Tablosu";
             this.tsMfrKeyTable.UseVisualStyleBackColor = true;
@@ -2523,7 +2536,7 @@
             this.groupBox23.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBox23.Location = new System.Drawing.Point(3, 3);
             this.groupBox23.Name = "groupBox23";
-            this.groupBox23.Size = new System.Drawing.Size(647, 649);
+            this.groupBox23.Size = new System.Drawing.Size(647, 623);
             this.groupBox23.TabIndex = 4;
             this.groupBox23.TabStop = false;
             // 
@@ -2563,7 +2576,7 @@
             this.tsLCDMessages.Location = new System.Drawing.Point(4, 22);
             this.tsLCDMessages.Name = "tsLCDMessages";
             this.tsLCDMessages.Padding = new System.Windows.Forms.Padding(3);
-            this.tsLCDMessages.Size = new System.Drawing.Size(1108, 655);
+            this.tsLCDMessages.Size = new System.Drawing.Size(1108, 629);
             this.tsLCDMessages.TabIndex = 3;
             this.tsLCDMessages.Text = "Ekran Mesajları";
             this.tsLCDMessages.UseVisualStyleBackColor = true;
@@ -2576,7 +2589,7 @@
             this.tabControl2.Location = new System.Drawing.Point(3, 3);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(1102, 649);
+            this.tabControl2.Size = new System.Drawing.Size(1102, 623);
             this.tabControl2.TabIndex = 8;
             // 
             // tabPage3
@@ -2586,7 +2599,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1094, 623);
+            this.tabPage3.Size = new System.Drawing.Size(1094, 597);
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "Online Mesaj";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -2628,7 +2641,7 @@
             this.groupBox25.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox25.Location = new System.Drawing.Point(344, 3);
             this.groupBox25.Name = "groupBox25";
-            this.groupBox25.Size = new System.Drawing.Size(747, 617);
+            this.groupBox25.Size = new System.Drawing.Size(747, 591);
             this.groupBox25.TabIndex = 6;
             this.groupBox25.TabStop = false;
             this.groupBox25.Text = "Cihaza Inpu Box Mesajı Gönder (Online)";
@@ -3036,7 +3049,7 @@
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBox6.Location = new System.Drawing.Point(3, 3);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(341, 617);
+            this.groupBox6.Size = new System.Drawing.Size(341, 591);
             this.groupBox6.TabIndex = 5;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Cihaza Mesaj Gönder (Online)";
@@ -3614,7 +3627,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1094, 623);
+            this.tabPage4.Size = new System.Drawing.Size(1094, 597);
             this.tabPage4.TabIndex = 1;
             this.tabPage4.Text = "Offline Mesaj";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -3685,7 +3698,7 @@
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBox7.Location = new System.Drawing.Point(3, 3);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(341, 617);
+            this.groupBox7.Size = new System.Drawing.Size(341, 591);
             this.groupBox7.TabIndex = 6;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Cihaz Mesajları  (Offline)";
@@ -4276,6 +4289,7 @@
             // 
             // tsAccessSettings
             // 
+            this.tsAccessSettings.Controls.Add(this.groupBox27);
             this.tsAccessSettings.Controls.Add(this.button17);
             this.tsAccessSettings.Controls.Add(this.chkYenidenBaslat);
             this.tsAccessSettings.Controls.Add(this.groupBox17);
@@ -4286,14 +4300,14 @@
             this.tsAccessSettings.Location = new System.Drawing.Point(4, 22);
             this.tsAccessSettings.Name = "tsAccessSettings";
             this.tsAccessSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tsAccessSettings.Size = new System.Drawing.Size(1108, 655);
+            this.tsAccessSettings.Size = new System.Drawing.Size(1108, 629);
             this.tsAccessSettings.TabIndex = 4;
             this.tsAccessSettings.Text = "Uygulama Ayarları";
             this.tsAccessSettings.UseVisualStyleBackColor = true;
             // 
             // button17
             // 
-            this.button17.Location = new System.Drawing.Point(369, 435);
+            this.button17.Location = new System.Drawing.Point(478, 450);
             this.button17.Name = "button17";
             this.button17.Size = new System.Drawing.Size(375, 37);
             this.button17.TabIndex = 6;
@@ -4304,7 +4318,7 @@
             // chkYenidenBaslat
             // 
             this.chkYenidenBaslat.AutoSize = true;
-            this.chkYenidenBaslat.Location = new System.Drawing.Point(369, 412);
+            this.chkYenidenBaslat.Location = new System.Drawing.Point(478, 427);
             this.chkYenidenBaslat.Name = "chkYenidenBaslat";
             this.chkYenidenBaslat.Size = new System.Drawing.Size(97, 17);
             this.chkYenidenBaslat.TabIndex = 5;
@@ -4324,7 +4338,7 @@
             this.groupBox17.Controls.Add(this.label114);
             this.groupBox17.Controls.Add(this.label115);
             this.groupBox17.Controls.Add(this.chkZilCaldirmaEtkin);
-            this.groupBox17.Location = new System.Drawing.Point(368, 186);
+            this.groupBox17.Location = new System.Drawing.Point(478, 205);
             this.groupBox17.Name = "groupBox17";
             this.groupBox17.Size = new System.Drawing.Size(375, 199);
             this.groupBox17.TabIndex = 4;
@@ -4449,9 +4463,9 @@
             this.groupBox16.Controls.Add(this.label112);
             this.groupBox16.Controls.Add(this.label110);
             this.groupBox16.Controls.Add(this.chkOkuyucuHizmetDisiAyarlariHizmetDisiEtkin);
-            this.groupBox16.Location = new System.Drawing.Point(368, 7);
+            this.groupBox16.Location = new System.Drawing.Point(478, 7);
             this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(376, 173);
+            this.groupBox16.Size = new System.Drawing.Size(376, 189);
             this.groupBox16.TabIndex = 3;
             this.groupBox16.TabStop = false;
             this.groupBox16.Text = "Okuyucu Hizmet Dışı Ayarları  ";
@@ -4500,7 +4514,7 @@
             // 
             // button25
             // 
-            this.button25.Location = new System.Drawing.Point(235, 144);
+            this.button25.Location = new System.Drawing.Point(230, 160);
             this.button25.Name = "button25";
             this.button25.Size = new System.Drawing.Size(135, 23);
             this.button25.TabIndex = 36;
@@ -4510,9 +4524,9 @@
             // 
             // button26
             // 
-            this.button26.Location = new System.Drawing.Point(154, 144);
+            this.button26.Location = new System.Drawing.Point(155, 160);
             this.button26.Name = "button26";
-            this.button26.Size = new System.Drawing.Size(75, 23);
+            this.button26.Size = new System.Drawing.Size(71, 23);
             this.button26.TabIndex = 35;
             this.button26.Text = "Gönder";
             this.button26.UseVisualStyleBackColor = true;
@@ -4520,7 +4534,7 @@
             // 
             // button27
             // 
-            this.button27.Location = new System.Drawing.Point(73, 144);
+            this.button27.Location = new System.Drawing.Point(77, 160);
             this.button27.Name = "button27";
             this.button27.Size = new System.Drawing.Size(75, 23);
             this.button27.TabIndex = 34;
@@ -4588,9 +4602,9 @@
             this.groupBox15.Controls.Add(this.digerEKSAyarlariKisiVerisi);
             this.groupBox15.Controls.Add(this.label108);
             this.groupBox15.Controls.Add(this.label107);
-            this.groupBox15.Location = new System.Drawing.Point(10, 340);
+            this.groupBox15.Location = new System.Drawing.Point(10, 361);
             this.groupBox15.Name = "groupBox15";
-            this.groupBox15.Size = new System.Drawing.Size(353, 132);
+            this.groupBox15.Size = new System.Drawing.Size(456, 132);
             this.groupBox15.TabIndex = 2;
             this.groupBox15.TabStop = false;
             this.groupBox15.Text = "Diğer EKS Ayarları  ";
@@ -4678,9 +4692,9 @@
             this.groupBox14.Controls.Add(this.labeGecisAraligi);
             this.groupBox14.Controls.Add(this.labelGuvenlikBolgeNo);
             this.groupBox14.Controls.Add(this.label32);
-            this.groupBox14.Location = new System.Drawing.Point(10, 186);
+            this.groupBox14.Location = new System.Drawing.Point(10, 205);
             this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(353, 148);
+            this.groupBox14.Size = new System.Drawing.Size(456, 148);
             this.groupBox14.TabIndex = 1;
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Anti Passback Ayarları  ";
@@ -4797,6 +4811,9 @@
             // 
             // groupBox13
             // 
+            this.groupBox13.Controls.Add(this.btnPersTZMode);
+            this.groupBox13.Controls.Add(this.lblInputDuration);
+            this.groupBox13.Controls.Add(this.cbPersTZMode);
             this.groupBox13.Controls.Add(this.edtGenelAyarlarZamanKisitTablosuEtkin);
             this.groupBox13.Controls.Add(this.button20);
             this.groupBox13.Controls.Add(this.button19);
@@ -4811,15 +4828,47 @@
             this.groupBox13.Controls.Add(this.edtGenelAyarlarGecisTipi);
             this.groupBox13.Location = new System.Drawing.Point(9, 7);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(353, 173);
+            this.groupBox13.Size = new System.Drawing.Size(457, 189);
             this.groupBox13.TabIndex = 0;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Genel Ayarlar  ";
             // 
+            // btnPersTZMode
+            // 
+            this.btnPersTZMode.Location = new System.Drawing.Point(229, 125);
+            this.btnPersTZMode.Name = "btnPersTZMode";
+            this.btnPersTZMode.Size = new System.Drawing.Size(166, 24);
+            this.btnPersTZMode.TabIndex = 37;
+            this.btnPersTZMode.Text = "Kişi Zaman Kısıt Tablosu";
+            this.btnPersTZMode.UseVisualStyleBackColor = true;
+            this.btnPersTZMode.Click += new System.EventHandler(this.btnPersTZMode_Click);
+            // 
+            // lblInputDuration
+            // 
+            this.lblInputDuration.AutoSize = true;
+            this.lblInputDuration.Location = new System.Drawing.Point(6, 106);
+            this.lblInputDuration.Name = "lblInputDuration";
+            this.lblInputDuration.Size = new System.Drawing.Size(92, 13);
+            this.lblInputDuration.TabIndex = 36;
+            this.lblInputDuration.Text = "Zaman Kısıt Modu";
+            // 
+            // cbPersTZMode
+            // 
+            this.cbPersTZMode.FormattingEnabled = true;
+            this.cbPersTZMode.Items.AddRange(new object[] {
+            "Kapalı",
+            "Zaman Aralığı",
+            "Zaman Tablo No"});
+            this.cbPersTZMode.Location = new System.Drawing.Point(158, 100);
+            this.cbPersTZMode.Name = "cbPersTZMode";
+            this.cbPersTZMode.Size = new System.Drawing.Size(121, 21);
+            this.cbPersTZMode.TabIndex = 35;
+            this.cbPersTZMode.SelectedIndexChanged += new System.EventHandler(this.cbPersTZMode_SelectedIndexChanged);
+            // 
             // edtGenelAyarlarZamanKisitTablosuEtkin
             // 
             this.edtGenelAyarlarZamanKisitTablosuEtkin.AutoSize = true;
-            this.edtGenelAyarlarZamanKisitTablosuEtkin.Location = new System.Drawing.Point(185, 113);
+            this.edtGenelAyarlarZamanKisitTablosuEtkin.Location = new System.Drawing.Point(293, 17);
             this.edtGenelAyarlarZamanKisitTablosuEtkin.Name = "edtGenelAyarlarZamanKisitTablosuEtkin";
             this.edtGenelAyarlarZamanKisitTablosuEtkin.Size = new System.Drawing.Size(149, 17);
             this.edtGenelAyarlarZamanKisitTablosuEtkin.TabIndex = 34;
@@ -4828,9 +4877,9 @@
             // 
             // button20
             // 
-            this.button20.Location = new System.Drawing.Point(206, 144);
+            this.button20.Location = new System.Drawing.Point(293, 40);
             this.button20.Name = "button20";
-            this.button20.Size = new System.Drawing.Size(135, 23);
+            this.button20.Size = new System.Drawing.Size(149, 23);
             this.button20.TabIndex = 33;
             this.button20.Text = "Zaman Kısıt Tablosu";
             this.button20.UseVisualStyleBackColor = true;
@@ -4838,9 +4887,9 @@
             // 
             // button19
             // 
-            this.button19.Location = new System.Drawing.Point(125, 144);
+            this.button19.Location = new System.Drawing.Point(283, 155);
             this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(75, 23);
+            this.button19.Size = new System.Drawing.Size(112, 28);
             this.button19.TabIndex = 32;
             this.button19.Text = "Gönder";
             this.button19.UseVisualStyleBackColor = true;
@@ -4848,9 +4897,9 @@
             // 
             // button18
             // 
-            this.button18.Location = new System.Drawing.Point(44, 144);
+            this.button18.Location = new System.Drawing.Point(158, 155);
             this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(75, 23);
+            this.button18.Size = new System.Drawing.Size(121, 28);
             this.button18.TabIndex = 31;
             this.button18.Text = "Getir";
             this.button18.UseVisualStyleBackColor = true;
@@ -4858,7 +4907,7 @@
             // 
             // edtUygulamaayarlariGecisSuresi
             // 
-            this.edtUygulamaayarlariGecisSuresi.Location = new System.Drawing.Point(102, 113);
+            this.edtUygulamaayarlariGecisSuresi.Location = new System.Drawing.Point(158, 128);
             this.edtUygulamaayarlariGecisSuresi.Maximum = new decimal(new int[] {
             9999,
             0,
@@ -4871,7 +4920,7 @@
             // labelGecisSuresi
             // 
             this.labelGecisSuresi.AutoSize = true;
-            this.labelGecisSuresi.Location = new System.Drawing.Point(99, 96);
+            this.labelGecisSuresi.Location = new System.Drawing.Point(6, 131);
             this.labelGecisSuresi.Name = "labelGecisSuresi";
             this.labelGecisSuresi.Size = new System.Drawing.Size(66, 13);
             this.labelGecisSuresi.TabIndex = 6;
@@ -4880,7 +4929,7 @@
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(25, 73);
+            this.label30.Location = new System.Drawing.Point(6, 76);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(47, 13);
             this.label30.TabIndex = 5;
@@ -4895,7 +4944,7 @@
             "Butonla Kapı Açmak İçin Kullan",
             "Turnike veya Kapıdan Dönüş Bilgisini Almak için Kullan",
             "Kapı Açık Kaldı Alarmı"});
-            this.edtUygulamaAyariGirisTipi.Location = new System.Drawing.Point(103, 70);
+            this.edtUygulamaAyariGirisTipi.Location = new System.Drawing.Point(158, 73);
             this.edtUygulamaAyariGirisTipi.Name = "edtUygulamaAyariGirisTipi";
             this.edtUygulamaAyariGirisTipi.Size = new System.Drawing.Size(237, 21);
             this.edtUygulamaAyariGirisTipi.TabIndex = 4;
@@ -4904,7 +4953,7 @@
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(25, 46);
+            this.label29.Location = new System.Drawing.Point(6, 49);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(78, 13);
             this.label29.TabIndex = 3;
@@ -4917,7 +4966,7 @@
             this.edtGenelAyarlarSifreGecisTipi.Items.AddRange(new object[] {
             "Sadece Şifre",
             "Kişi No +  Şifre"});
-            this.edtGenelAyarlarSifreGecisTipi.Location = new System.Drawing.Point(104, 42);
+            this.edtGenelAyarlarSifreGecisTipi.Location = new System.Drawing.Point(158, 46);
             this.edtGenelAyarlarSifreGecisTipi.Name = "edtGenelAyarlarSifreGecisTipi";
             this.edtGenelAyarlarSifreGecisTipi.Size = new System.Drawing.Size(121, 21);
             this.edtGenelAyarlarSifreGecisTipi.TabIndex = 2;
@@ -4925,7 +4974,7 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(25, 22);
+            this.label28.Location = new System.Drawing.Point(6, 25);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(54, 13);
             this.label28.TabIndex = 1;
@@ -4939,7 +4988,7 @@
             "Sadece Kart",
             "Kart veya Şifre",
             "Kart ve Şifre"});
-            this.edtGenelAyarlarGecisTipi.Location = new System.Drawing.Point(104, 14);
+            this.edtGenelAyarlarGecisTipi.Location = new System.Drawing.Point(158, 17);
             this.edtGenelAyarlarGecisTipi.Name = "edtGenelAyarlarGecisTipi";
             this.edtGenelAyarlarGecisTipi.Size = new System.Drawing.Size(121, 21);
             this.edtGenelAyarlarGecisTipi.TabIndex = 0;
@@ -4983,7 +5032,7 @@
             this.tsAddWhitelist.Location = new System.Drawing.Point(4, 22);
             this.tsAddWhitelist.Name = "tsAddWhitelist";
             this.tsAddWhitelist.Padding = new System.Windows.Forms.Padding(3);
-            this.tsAddWhitelist.Size = new System.Drawing.Size(1108, 655);
+            this.tsAddWhitelist.Size = new System.Drawing.Size(1108, 629);
             this.tsAddWhitelist.TabIndex = 5;
             this.tsAddWhitelist.Text = "Kişi Ekleme";
             this.tsAddWhitelist.UseVisualStyleBackColor = true;
@@ -5102,17 +5151,17 @@
             // label188
             // 
             this.label188.AutoSize = true;
-            this.label188.Location = new System.Drawing.Point(245, 169);
+            this.label188.Location = new System.Drawing.Point(397, 20);
             this.label188.Name = "label188";
-            this.label188.Size = new System.Drawing.Size(79, 13);
+            this.label188.Size = new System.Drawing.Size(104, 13);
             this.label188.TabIndex = 132;
-            this.label188.Text = "Doğum Tarihi : ";
+            this.label188.Text = "Kart Başlangıç Tarihi";
             // 
             // dtDogumTarihi
             // 
             this.dtDogumTarihi.CustomFormat = " dd.MM.yyyy HH:mm:ss";
             this.dtDogumTarihi.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtDogumTarihi.Location = new System.Drawing.Point(368, 163);
+            this.dtDogumTarihi.Location = new System.Drawing.Point(400, 41);
             this.dtDogumTarihi.Name = "dtDogumTarihi";
             this.dtDogumTarihi.Size = new System.Drawing.Size(81, 20);
             this.dtDogumTarihi.TabIndex = 131;
@@ -5153,7 +5202,7 @@
             // lblIndexNo
             // 
             this.lblIndexNo.AutoSize = true;
-            this.lblIndexNo.Location = new System.Drawing.Point(227, 19);
+            this.lblIndexNo.Location = new System.Drawing.Point(240, 16);
             this.lblIndexNo.Name = "lblIndexNo";
             this.lblIndexNo.Size = new System.Drawing.Size(34, 13);
             this.lblIndexNo.TabIndex = 127;
@@ -5297,7 +5346,7 @@
             // label46
             // 
             this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(17, 169);
+            this.label46.Location = new System.Drawing.Point(397, 76);
             this.label46.Name = "label46";
             this.label46.Size = new System.Drawing.Size(109, 13);
             this.label46.TabIndex = 115;
@@ -5307,7 +5356,7 @@
             // 
             this.edtEndDate.CustomFormat = " dd.MM.yyyy HH:mm:ss";
             this.edtEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.edtEndDate.Location = new System.Drawing.Point(140, 163);
+            this.edtEndDate.Location = new System.Drawing.Point(400, 92);
             this.edtEndDate.Name = "edtEndDate";
             this.edtEndDate.Size = new System.Drawing.Size(81, 20);
             this.edtEndDate.TabIndex = 114;
@@ -5316,7 +5365,7 @@
             // label45
             // 
             this.label45.AutoSize = true;
-            this.label45.Location = new System.Drawing.Point(16, 139);
+            this.label45.Location = new System.Drawing.Point(18, 118);
             this.label45.Name = "label45";
             this.label45.Size = new System.Drawing.Size(28, 13);
             this.label45.TabIndex = 113;
@@ -5324,7 +5373,7 @@
             // 
             // sePassword
             // 
-            this.sePassword.Location = new System.Drawing.Point(103, 137);
+            this.sePassword.Location = new System.Drawing.Point(105, 116);
             this.sePassword.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -5337,7 +5386,7 @@
             // label44
             // 
             this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(16, 113);
+            this.label44.Location = new System.Drawing.Point(18, 92);
             this.label44.Name = "label44";
             this.label44.Size = new System.Drawing.Size(26, 13);
             this.label44.TabIndex = 111;
@@ -5345,7 +5394,7 @@
             // 
             // seCode
             // 
-            this.seCode.Location = new System.Drawing.Point(103, 111);
+            this.seCode.Location = new System.Drawing.Point(105, 90);
             this.seCode.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -5358,7 +5407,7 @@
             // label37
             // 
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(16, 87);
+            this.label37.Location = new System.Drawing.Point(18, 66);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(62, 13);
             this.label37.TabIndex = 97;
@@ -5366,7 +5415,7 @@
             // 
             // seAccMask1
             // 
-            this.seAccMask1.Location = new System.Drawing.Point(103, 85);
+            this.seAccMask1.Location = new System.Drawing.Point(105, 64);
             this.seAccMask1.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -5387,7 +5436,7 @@
             // 
             // edtName
             // 
-            this.edtName.Location = new System.Drawing.Point(92, 41);
+            this.edtName.Location = new System.Drawing.Point(105, 38);
             this.edtName.MaxLength = 18;
             this.edtName.Name = "edtName";
             this.edtName.Size = new System.Drawing.Size(129, 20);
@@ -5404,7 +5453,7 @@
             // 
             // edtCardID
             // 
-            this.edtCardID.Location = new System.Drawing.Point(92, 16);
+            this.edtCardID.Location = new System.Drawing.Point(105, 13);
             this.edtCardID.MaxLength = 14;
             this.edtCardID.Name = "edtCardID";
             this.edtCardID.Size = new System.Drawing.Size(129, 20);
@@ -5632,7 +5681,7 @@
             this.tbpHgsGenelAyarlar.Location = new System.Drawing.Point(4, 22);
             this.tbpHgsGenelAyarlar.Name = "tbpHgsGenelAyarlar";
             this.tbpHgsGenelAyarlar.Padding = new System.Windows.Forms.Padding(3);
-            this.tbpHgsGenelAyarlar.Size = new System.Drawing.Size(1108, 655);
+            this.tbpHgsGenelAyarlar.Size = new System.Drawing.Size(1108, 629);
             this.tbpHgsGenelAyarlar.TabIndex = 8;
             this.tbpHgsGenelAyarlar.Text = "Hgs Genel Ayarlar";
             this.tbpHgsGenelAyarlar.UseVisualStyleBackColor = true;
@@ -6587,7 +6636,7 @@
             this.tbpCihazdanBilgiTransfer.Location = new System.Drawing.Point(4, 22);
             this.tbpCihazdanBilgiTransfer.Name = "tbpCihazdanBilgiTransfer";
             this.tbpCihazdanBilgiTransfer.Padding = new System.Windows.Forms.Padding(3);
-            this.tbpCihazdanBilgiTransfer.Size = new System.Drawing.Size(1108, 655);
+            this.tbpCihazdanBilgiTransfer.Size = new System.Drawing.Size(1108, 629);
             this.tbpCihazdanBilgiTransfer.TabIndex = 9;
             this.tbpCihazdanBilgiTransfer.Text = "Bilgi Transferleri";
             this.tbpCihazdanBilgiTransfer.UseVisualStyleBackColor = true;
@@ -6720,7 +6769,7 @@
             this.tbpYmk.Location = new System.Drawing.Point(4, 22);
             this.tbpYmk.Name = "tbpYmk";
             this.tbpYmk.Padding = new System.Windows.Forms.Padding(3);
-            this.tbpYmk.Size = new System.Drawing.Size(1108, 655);
+            this.tbpYmk.Size = new System.Drawing.Size(1108, 629);
             this.tbpYmk.TabIndex = 10;
             this.tbpYmk.Text = "Yemekhane";
             this.tbpYmk.UseVisualStyleBackColor = true;
@@ -7027,7 +7076,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(1108, 655);
+            this.tabPage5.Size = new System.Drawing.Size(1108, 629);
             this.tabPage5.TabIndex = 11;
             this.tabPage5.Text = "Mifare Kart Yazma Okuma";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -7128,7 +7177,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(1108, 655);
+            this.tabPage6.Size = new System.Drawing.Size(1108, 629);
             this.tabPage6.TabIndex = 12;
             this.tabPage6.Text = "Black List";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -7271,7 +7320,7 @@
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(1108, 655);
+            this.tabPage7.Size = new System.Drawing.Size(1108, 629);
             this.tabPage7.TabIndex = 13;
             this.tabPage7.Text = "Get / Set Node";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -7739,7 +7788,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(354, 741);
+            this.tabPage2.Size = new System.Drawing.Size(354, 715);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Cihaz UDP Logları";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -7750,7 +7799,7 @@
             this.udPlog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.udPlog.Location = new System.Drawing.Point(3, 53);
             this.udPlog.Name = "udPlog";
-            this.udPlog.Size = new System.Drawing.Size(348, 685);
+            this.udPlog.Size = new System.Drawing.Size(348, 659);
             this.udPlog.TabIndex = 1;
             this.udPlog.TabStop = false;
             // 
@@ -7761,7 +7810,7 @@
             this.udpLogText.Multiline = true;
             this.udpLogText.Name = "udpLogText";
             this.udpLogText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.udpLogText.Size = new System.Drawing.Size(342, 666);
+            this.udpLogText.Size = new System.Drawing.Size(342, 640);
             this.udpLogText.TabIndex = 0;
             // 
             // groupBox24
@@ -7833,6 +7882,73 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // groupBox27
+            // 
+            this.groupBox27.Controls.Add(this.btnGetStatusMode);
+            this.groupBox27.Controls.Add(this.btnSendStatusMode);
+            this.groupBox27.Controls.Add(this.edtStatusModeType);
+            this.groupBox27.Controls.Add(this.edtStatusMode);
+            this.groupBox27.Controls.Add(this.label197);
+            this.groupBox27.Controls.Add(this.label196);
+            this.groupBox27.Location = new System.Drawing.Point(10, 499);
+            this.groupBox27.Name = "groupBox27";
+            this.groupBox27.Size = new System.Drawing.Size(456, 100);
+            this.groupBox27.TabIndex = 7;
+            this.groupBox27.TabStop = false;
+            this.groupBox27.Text = "Durum Modları";
+            // 
+            // label196
+            // 
+            this.label196.AutoSize = true;
+            this.label196.Location = new System.Drawing.Point(17, 29);
+            this.label196.Name = "label196";
+            this.label196.Size = new System.Drawing.Size(76, 13);
+            this.label196.TabIndex = 0;
+            this.label196.Text = "Status Mode : ";
+            // 
+            // label197
+            // 
+            this.label197.AutoSize = true;
+            this.label197.Location = new System.Drawing.Point(17, 57);
+            this.label197.Name = "label197";
+            this.label197.Size = new System.Drawing.Size(70, 13);
+            this.label197.TabIndex = 0;
+            this.label197.Text = "Mode Type : ";
+            // 
+            // edtStatusMode
+            // 
+            this.edtStatusMode.Location = new System.Drawing.Point(103, 24);
+            this.edtStatusMode.Name = "edtStatusMode";
+            this.edtStatusMode.Size = new System.Drawing.Size(60, 20);
+            this.edtStatusMode.TabIndex = 1;
+            // 
+            // edtStatusModeType
+            // 
+            this.edtStatusModeType.Location = new System.Drawing.Point(103, 55);
+            this.edtStatusModeType.Name = "edtStatusModeType";
+            this.edtStatusModeType.Size = new System.Drawing.Size(60, 20);
+            this.edtStatusModeType.TabIndex = 1;
+            // 
+            // btnSendStatusMode
+            // 
+            this.btnSendStatusMode.Location = new System.Drawing.Point(170, 22);
+            this.btnSendStatusMode.Name = "btnSendStatusMode";
+            this.btnSendStatusMode.Size = new System.Drawing.Size(75, 23);
+            this.btnSendStatusMode.TabIndex = 2;
+            this.btnSendStatusMode.Text = "Gönder";
+            this.btnSendStatusMode.UseVisualStyleBackColor = true;
+            this.btnSendStatusMode.Click += new System.EventHandler(this.btnSendStatusMode_Click);
+            // 
+            // btnGetStatusMode
+            // 
+            this.btnGetStatusMode.Location = new System.Drawing.Point(169, 53);
+            this.btnGetStatusMode.Name = "btnGetStatusMode";
+            this.btnGetStatusMode.Size = new System.Drawing.Size(75, 23);
+            this.btnGetStatusMode.TabIndex = 2;
+            this.btnGetStatusMode.Text = "Getir";
+            this.btnGetStatusMode.UseVisualStyleBackColor = true;
+            this.btnGetStatusMode.Click += new System.EventHandler(this.btnGetStatusMode_Click);
             // 
             // frmMain
             // 
@@ -8059,6 +8175,10 @@
             this.groupBox24.ResumeLayout(false);
             this.groupBox24.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtUdpPortNumber)).EndInit();
+            this.groupBox27.ResumeLayout(false);
+            this.groupBox27.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.edtStatusMode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.edtStatusModeType)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -8684,6 +8804,16 @@
         private System.Windows.Forms.Button button45;
         private System.Windows.Forms.ComboBox cmbOgunDisindaOkuyucuNeYapsin;
         private System.Windows.Forms.Label label195;
+        private System.Windows.Forms.Label lblInputDuration;
+        private System.Windows.Forms.ComboBox cbPersTZMode;
+        private System.Windows.Forms.Button btnPersTZMode;
+        private System.Windows.Forms.GroupBox groupBox27;
+        private System.Windows.Forms.Button btnGetStatusMode;
+        private System.Windows.Forms.Button btnSendStatusMode;
+        private System.Windows.Forms.NumericUpDown edtStatusModeType;
+        private System.Windows.Forms.NumericUpDown edtStatusMode;
+        private System.Windows.Forms.Label label197;
+        private System.Windows.Forms.Label label196;
     }
 }
 

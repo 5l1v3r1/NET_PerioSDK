@@ -25,6 +25,35 @@ namespace PerioTCPRdr
         }
     }
 
+
+
+    public class TPersTZ
+    {
+        public DateTime Day ;
+        public TOneTAC[] Part;
+        public byte TZListNo;
+        public TPersTZ()
+        {
+            Part = new TOneTAC[8];
+        }
+    }
+
+
+    public class TPersTZList
+    {
+        public TPersTZ[] List;
+        public TPersTZList()
+        {
+            List = new TPersTZ[5];
+
+            for (int i = 0; i < List.Length; i++)
+            {
+                List[i] = new TPersTZ();
+            }
+
+        }
+    }
+
     public struct TOneHGSRecord
     {
        public string CardID;
@@ -272,8 +301,8 @@ namespace PerioTCPRdr
 
     public partial class PerioTCPRdrComp : TCustomTcpRdr
     {
-        private TfwAppType ffwAppType;
-
+        private TfwAppType ffwAppType;        
+        
 
         public TfwAppType fwAppType
         {
@@ -287,42 +316,41 @@ namespace PerioTCPRdr
             }
         }
 
-        protected int tcpDeleteHGSWhitelistWithDaireArac(ushort DaireNo , byte AracNo, out int IndexNo)
+        protected int tcpDeleteHGSWhitelistWithDaireArac(ushort DaireNo, byte AracNo, out int IndexNo)
         {
-             IndexNo = 0;
-             int iErr;
-             //int OldCmdRetry;
-             byte[] SendData = new byte[512];
-             byte[] RecData = new byte[512];
+            IndexNo = 0;
+            int iErr;
+            //int OldCmdRetry;
+            byte[] SendData = new byte[512];
+            byte[] RecData = new byte[512];
 
-                //OldCmdRetry = CommandRetry;
-                //CommandRetry = 1;
+            //OldCmdRetry = CommandRetry;
+            //CommandRetry = 1;
 
-             try
-             {
-                 ToPrBytes(DaireNo, ref SendData, 0);
-                 SendData[2] = AracNo;
-                 SendData[3] = 0;
-                 iErr = ExecuteCmd(3, 48, 48, 4, SendData, out RecData, 2000, 1);
+            try
+            {
+                ToPrBytes(DaireNo, ref SendData, 0);
+                SendData[2] = AracNo;
+                SendData[3] = 0;
+                iErr = ExecuteCmd(3, 48, 48, 4, SendData, out RecData, 2000, 1);
 
-                 if (iErr == 0)
-                 {
-                     IndexNo = prBytesToushort(RecData, 0);
-                 }
-             }
-             catch (Exception hata)
-             {
+                if (iErr == 0)
+                {
+                    IndexNo = prBytesToushort(RecData, 0);
+                }
+            }
+            catch (Exception hata)
+            {
 
-                 SaveLogFile(MethodBase.GetCurrentMethod(), hata);
-                 iErr = TErrors.EXCEPTION;
-             }
+                SaveLogFile(MethodBase.GetCurrentMethod(), hata);
+                iErr = TErrors.EXCEPTION;
+            }
 
 
-             return iErr;
+            return iErr;
 
 
         }
-
 
         protected int tcpSetMealTable(TMealTable rSettings)
         {
@@ -339,37 +367,33 @@ namespace PerioTCPRdr
                     SendData[0] = (byte)i;
                     for (int j = 0; j < 8; j++)
                     {
-                         ToPrBytes(rSettings.days[i].list[j].Name, ref SendData, (j * 22) + 1, 15);
-                         SendData[(j*22)+16] = (byte)rSettings.days[i].list[j].StartTime.Hour;
-                         SendData[(j*22)+17] = (byte)rSettings.days[i].list[j].StartTime.Minute;
-                         SendData[(j*22)+18] = rSettings.days[i].list[j].StartDBY;
-                         SendData[(j*22)+19] = (byte)rSettings.days[i].list[j].EndTime.Hour;
-                         SendData[(j*22)+20] = (byte)rSettings.days[i].list[j].EndTime.Minute;
-                         SendData[(j*22)+21] = (byte)rSettings.days[i].list[j].EndDBY;
-                         ToPrBytes(rSettings.days[i].list[j].Active, ref SendData, (j * 22) + 22);
+                        ToPrBytes(rSettings.days[i].list[j].Name, ref SendData, (j * 22) + 1, 15);
+                        SendData[(j * 22) + 16] = (byte)rSettings.days[i].list[j].StartTime.Hour;
+                        SendData[(j * 22) + 17] = (byte)rSettings.days[i].list[j].StartTime.Minute;
+                        SendData[(j * 22) + 18] = rSettings.days[i].list[j].StartDBY;
+                        SendData[(j * 22) + 19] = (byte)rSettings.days[i].list[j].EndTime.Hour;
+                        SendData[(j * 22) + 20] = (byte)rSettings.days[i].list[j].EndTime.Minute;
+                        SendData[(j * 22) + 21] = (byte)rSettings.days[i].list[j].EndDBY;
+                        ToPrBytes(rSettings.days[i].list[j].Active, ref SendData, (j * 22) + 22);
                     }
                     iErr = ExecuteCmd(4, 4, 4, 177, SendData, out RecData);
                 }
 
-                
+
 
 
             }
             catch (Exception hata)
             {
-                
-              SaveLogFile(MethodBase.GetCurrentMethod(), hata);
-              iErr = TErrors.EXCEPTION;
+
+                SaveLogFile(MethodBase.GetCurrentMethod(), hata);
+                iErr = TErrors.EXCEPTION;
             }
 
             return iErr;
 
         }
-
-
-
-       
-
+        
         protected int tcpSetPriceListTable(Byte TableNo, TPriceList rSettings)
         {
             int iErr = 0;
@@ -380,9 +404,9 @@ namespace PerioTCPRdr
             {
                 SendData[0] = TableNo;
                 ToPrBytes(rSettings.name, ref SendData, 1, 20);
-                iErr = ExecuteCmd(4, 10, 10, 21,  SendData, out RecData);
+                iErr = ExecuteCmd(4, 10, 10, 21, SendData, out RecData);
 
-                if (iErr==0)
+                if (iErr == 0)
                 {
 
                     for (int i = 0; i <= 6; i++)
@@ -393,7 +417,7 @@ namespace PerioTCPRdr
                         for (int j = 0; j <= 7; j++)
                         {
 
-                            for (int k = 0; k <=7 ; k++)
+                            for (int k = 0; k <= 7; k++)
                             {
 
                                 ToPrBytes(rSettings.Days[i].Meals[j].Prices[k], ref SendData, (j * 16) + (k * 2) + 2);
@@ -411,11 +435,11 @@ namespace PerioTCPRdr
                 SaveLogFile(MethodBase.GetCurrentMethod(), hata);
                 iErr = TErrors.EXCEPTION;
             }
-            
-                       
+
+
 
             return iErr;
-        
+
         }
 
 
@@ -428,15 +452,15 @@ namespace PerioTCPRdr
 
             try
             {
-              SendData[0] = rSettings.AppType;
-	          SendData[1] = rSettings.CurrPriceList;
-	          SendData[2] = rSettings.YmkSectorNo;
-	          SendData[3] = rSettings.PlantNo;
-	          SendData[4] = rSettings.ReReadCardCount;
-	          SendData[5] = rSettings.ReReadPriceGroup;
-	          SendData[6] = rSettings.ReReadTimeOut;
+                SendData[0] = rSettings.AppType;
+                SendData[1] = rSettings.CurrPriceList;
+                SendData[2] = rSettings.YmkSectorNo;
+                SendData[3] = rSettings.PlantNo;
+                SendData[4] = rSettings.ReReadCardCount;
+                SendData[5] = rSettings.ReReadPriceGroup;
+                SendData[6] = rSettings.ReReadTimeOut;
 
-              iErr = ExecuteCmd(4,2, 2, 7, SendData, out RecData);
+                iErr = ExecuteCmd(4, 2, 2, 7, SendData, out RecData);
 
             }
             catch (Exception hata)
@@ -461,32 +485,32 @@ namespace PerioTCPRdr
             rSettings = tmpSettings;
 
 
-                try
-                {
-                    iErr = ExecuteCmd(4, 1, 1, 0, SendData, out RecData );
+            try
+            {
+                iErr = ExecuteCmd(4, 1, 1, 0, SendData, out RecData);
 
-                    if (iErr==0)
-                    {
-                          rSettings.AppType = RecData[0];
-	                      rSettings.CurrPriceList = RecData[1];
-	                      rSettings.YmkSectorNo = RecData[2];
-	                      rSettings.PlantNo = RecData[3];
-	                      rSettings.ReReadCardCount = RecData[4];
-	                      rSettings.ReReadPriceGroup = RecData[5];
-	                      rSettings.ReReadTimeOut = RecData[6];
-                    }
-
-                }
-                catch (Exception hata)
+                if (iErr == 0)
                 {
-                    SaveLogFile(MethodBase.GetCurrentMethod(), hata);
-                    iErr = TErrors.EXCEPTION;
+                    rSettings.AppType = RecData[0];
+                    rSettings.CurrPriceList = RecData[1];
+                    rSettings.YmkSectorNo = RecData[2];
+                    rSettings.PlantNo = RecData[3];
+                    rSettings.ReReadCardCount = RecData[4];
+                    rSettings.ReReadPriceGroup = RecData[5];
+                    rSettings.ReReadTimeOut = RecData[6];
                 }
+
+            }
+            catch (Exception hata)
+            {
+                SaveLogFile(MethodBase.GetCurrentMethod(), hata);
+                iErr = TErrors.EXCEPTION;
+            }
 
             return iErr;
         }
 
-        protected int tcpGetPersonCommands(string CardID , out TPersonCommandList CommandList)
+        protected int tcpGetPersonCommands(string CardID, out TPersonCommandList CommandList)
         {
 
             int iErr = 0;
@@ -495,7 +519,7 @@ namespace PerioTCPRdr
             TPersonCommandList personCommandList = new TPersonCommandList();
             try
             {
-                ToPrBytesFromHex(CardID,  ref SendData, 0, 14);
+                ToPrBytesFromHex(CardID, ref SendData, 0, 14);
                 iErr = ExecuteCmd(4, 20, 20, 7, SendData, out RecData);
                 if (iErr == 0)
                 {
@@ -525,7 +549,7 @@ namespace PerioTCPRdr
             int iErr = 0;
             byte[] SendData = new byte[512];
             byte[] RecData = new byte[512];
-            
+
             try
             {
                 ToPrBytesFromHex(CardID, ref SendData, 0, 14);
@@ -533,13 +557,13 @@ namespace PerioTCPRdr
                 for (int i = 0; i < 14; i++)
                 {
                     // SendData[2] = (byte)((TempStartFrom >> 16) & 0xFF);
-                    SendData[7 + (7 * i)]      = personCommandList.List[i].CmdType;
-                    SendData[7 + (7 * i) + 1]  = (byte)((personCommandList.List[i].SessionID) & 0xFF);
-                    SendData[7 + (7 * i) + 2]  = (byte)((personCommandList.List[i].SessionID >> 8)  & 0xFF);
-                    SendData[7 + (7 * i) + 3]  = (byte)((personCommandList.List[i].SessionID >> 16) & 0xFF);
-                    SendData[7 + (7 * i) + 4]  = 0;
-                    SendData[7 + (7 * i) + 5]  = (byte)(personCommandList.List[i].Amount >> 0xFF);
-                    SendData[7 + (7 * i) + 6]  = (byte)((personCommandList.List[i].Amount >> 8) & 0xFF);
+                    SendData[7 + (7 * i)] = personCommandList.List[i].CmdType;
+                    SendData[7 + (7 * i) + 1] = (byte)((personCommandList.List[i].SessionID) & 0xFF);
+                    SendData[7 + (7 * i) + 2] = (byte)((personCommandList.List[i].SessionID >> 8) & 0xFF);
+                    SendData[7 + (7 * i) + 3] = (byte)((personCommandList.List[i].SessionID >> 16) & 0xFF);
+                    SendData[7 + (7 * i) + 4] = 0;
+                    SendData[7 + (7 * i) + 5] = (byte)(personCommandList.List[i].Amount >> 0xFF);
+                    SendData[7 + (7 * i) + 6] = (byte)((personCommandList.List[i].Amount >> 8) & 0xFF);
                 }
                 SendData[112] = personCommandList.TotalCommand;
 
@@ -568,21 +592,21 @@ namespace PerioTCPRdr
             {
                 SendData[0] = TableNo;
 
-                iErr = ExecuteCmd(4,9,9,1, SendData, out RecData);
+                iErr = ExecuteCmd(4, 9, 9, 1, SendData, out RecData);
 
 
-                if (iErr==0)
+                if (iErr == 0)
                 {
-                    rSettings.name = prByteToString(RecData,0,20);
+                    rSettings.name = prByteToString(RecData, 0, 20);
 
                     for (int i = 0; i < 7; i++)
                     {
                         SendData[0] = TableNo;
                         SendData[1] = (byte)i;
 
-                        iErr = ExecuteCmd(4, 7, 7, 2,  SendData, out RecData );
+                        iErr = ExecuteCmd(4, 7, 7, 2, SendData, out RecData);
 
-                        if (iErr==0)
+                        if (iErr == 0)
                         {
 
                             for (int j = 0; j < 8; j++)
@@ -590,10 +614,10 @@ namespace PerioTCPRdr
 
                                 for (int k = 0; k < 8; k++)
                                 {
-                                    rSettings.Days[i].Meals[j].Prices[k] = prBytesToushort(RecData,(j*16)+(k*2));
+                                    rSettings.Days[i].Meals[j].Prices[k] = prBytesToushort(RecData, (j * 16) + (k * 2));
                                 }
                             }
-                            
+
                         }
 
                     }
@@ -602,7 +626,7 @@ namespace PerioTCPRdr
             }
             catch (Exception hata)
             {
-               
+
                 SaveLogFile(MethodBase.GetCurrentMethod(), hata);
                 iErr = TErrors.EXCEPTION;
             }
@@ -613,7 +637,7 @@ namespace PerioTCPRdr
         }
 
 
-        protected int tcpSetMealRigthTable( Byte TableNo , TWeaklyMealRigth rSettings)
+        protected int tcpSetMealRigthTable(Byte TableNo, TWeaklyMealRigth rSettings)
         {
             int iErr = 0;
             byte[] SendData = new byte[512];
@@ -627,8 +651,8 @@ namespace PerioTCPRdr
                 {
                     for (int j = 0; j < 8; j++)
                     {
-                        SendData[(i*9)+j+1] = rSettings.days[i].MealRigths[j];
-                        SendData[(i*9)+9] = rSettings.days[i].TotalDayRight;
+                        SendData[(i * 9) + j + 1] = rSettings.days[i].MealRigths[j];
+                        SendData[(i * 9) + 9] = rSettings.days[i].TotalDayRight;
                     }
                 }
 
@@ -636,12 +660,12 @@ namespace PerioTCPRdr
                 SendData[65] = 0;
                 SendData[66] = 0;
 
-                iErr = ExecuteCmd(4, 6, 6, 67, SendData, out RecData );
+                iErr = ExecuteCmd(4, 6, 6, 67, SendData, out RecData);
 
             }
             catch (Exception hata)
             {
-                
+
                 SaveLogFile(MethodBase.GetCurrentMethod(), hata);
                 iErr = TErrors.EXCEPTION;
             }
@@ -659,42 +683,42 @@ namespace PerioTCPRdr
             TWeaklyMealRigth tmpSettings = new TWeaklyMealRigth();
             rSettings = tmpSettings;
 
-                try
-                {
-                    SendData[0] = TableNo;
-                    iErr = ExecuteCmd(4, 5, 5, 1, SendData, out RecData );
+            try
+            {
+                SendData[0] = TableNo;
+                iErr = ExecuteCmd(4, 5, 5, 1, SendData, out RecData);
 
-                    if (iErr==0)
+                if (iErr == 0)
+                {
+
+                    for (int i = 0; i < 7; i++)
                     {
 
-                        for (int i = 0; i < 7; i++)
+                        for (int j = 0; j < 8; j++)
                         {
-
-                            for (int j = 0; j < 8; j++)
-                            {
-                                rSettings.days[i].MealRigths[j] = RecData[(i*9)+j];
-                                rSettings.days[i].TotalDayRight = RecData[(i*9)+8];
-                            }
-                            
+                            rSettings.days[i].MealRigths[j] = RecData[(i * 9) + j];
+                            rSettings.days[i].TotalDayRight = RecData[(i * 9) + 8];
                         }
-                        rSettings.TotalWeekRight = RecData[63];
+
                     }
-
+                    rSettings.TotalWeekRight = RecData[63];
                 }
-                catch (Exception hata)
-                {
-                    SaveLogFile(MethodBase.GetCurrentMethod(), hata);
-                    iErr = TErrors.EXCEPTION;
-                }
-                rSettings = tmpSettings;
 
-                return iErr;
+            }
+            catch (Exception hata)
+            {
+                SaveLogFile(MethodBase.GetCurrentMethod(), hata);
+                iErr = TErrors.EXCEPTION;
+            }
+            rSettings = tmpSettings;
+
+            return iErr;
 
         }
 
         protected int tcpGetMealTable(out TMealTable rSettings)
         {
-            int iErr=0;
+            int iErr = 0;
             int j;
             byte[] SendData = new byte[512];
             byte[] RecData = new byte[512];
@@ -731,11 +755,11 @@ namespace PerioTCPRdr
             }
             catch (Exception hata)
             {
-                
-              SaveLogFile(MethodBase.GetCurrentMethod(), hata);
-              iErr = TErrors.EXCEPTION;
+
+                SaveLogFile(MethodBase.GetCurrentMethod(), hata);
+                iErr = TErrors.EXCEPTION;
             }
-                    
+
 
 
 
@@ -743,89 +767,89 @@ namespace PerioTCPRdr
 
         }
 
-        protected int tcpGetHGSWhitelistWithDaireArac(ushort DaireNo , Byte AracNo , out THGSArac rArac , out int IndexNo)
+        protected int tcpGetHGSWhitelistWithDaireArac(ushort DaireNo, Byte AracNo, out THGSArac rArac, out int IndexNo)
         {
-          int iErr ;
-          byte[] SendData = new byte[512];
-          byte[] RecData = new byte[512];
+            int iErr;
+            byte[] SendData = new byte[512];
+            byte[] RecData = new byte[512];
 
-          THGSArac tmpSettings = new THGSArac();
-          rArac = tmpSettings;
+            THGSArac tmpSettings = new THGSArac();
+            rArac = tmpSettings;
 
-          IndexNo = 0;
-          try
-          {
-              ToPrBytes(DaireNo, ref SendData, 0);
-              SendData[2] = AracNo;
-              SendData[3] = 0;
-              iErr = ExecuteCmd(3, 46, 46, 4, SendData, out RecData, 2000, 3);
-
-
-              if (iErr == 0)
-              {
-                  
-                rArac.CardID = prBytesToHex(RecData,0,8);
-                rArac.Name = (prByteToString(RecData,8,18)).Trim();
-                
-                  for (int i = 26; i <= 32; i++)
-			        {
-                rArac.TimeAccessMask[i-26] = RecData[i];
-                rArac.Daire = prBytesToushort(RecData,33);
-                rArac.AracNo = RecData[35];
-                rArac.EndDate = new DateTime(RecData[41] + 2000, RecData[40], RecData[39]);
-                rArac.AccessDevice = prBytesToBoolean(RecData,42);
-                rArac.APBEnabled = prBytesToBoolean(RecData,43);
-                rArac.ATCEnabled = prBytesToBoolean(RecData,44);
-                rArac.AccessCardEnabled = prBytesToBoolean(RecData,45);
-                IndexNo = prBytesToushort(RecData,52);
-			        }
+            IndexNo = 0;
+            try
+            {
+                ToPrBytes(DaireNo, ref SendData, 0);
+                SendData[2] = AracNo;
+                SendData[3] = 0;
+                iErr = ExecuteCmd(3, 46, 46, 4, SendData, out RecData, 2000, 3);
 
 
-              }
-          }
-          catch (Exception hata)
-          {
-              SaveLogFile(MethodBase.GetCurrentMethod(), hata);
-              iErr = TErrors.EXCEPTION;
-          }
+                if (iErr == 0)
+                {
 
-          return iErr;
+                    rArac.CardID = prBytesToHex(RecData, 0, 8);
+                    rArac.Name = (prByteToString(RecData, 8, 18)).Trim();
+
+                    for (int i = 26; i <= 32; i++)
+                    {
+                        rArac.TimeAccessMask[i - 26] = RecData[i];
+                        rArac.Daire = prBytesToushort(RecData, 33);
+                        rArac.AracNo = RecData[35];
+                        rArac.EndDate = new DateTime(RecData[41] + 2000, RecData[40], RecData[39]);
+                        rArac.AccessDevice = prBytesToBoolean(RecData, 42);
+                        rArac.APBEnabled = prBytesToBoolean(RecData, 43);
+                        rArac.ATCEnabled = prBytesToBoolean(RecData, 44);
+                        rArac.AccessCardEnabled = prBytesToBoolean(RecData, 45);
+                        IndexNo = prBytesToushort(RecData, 52);
+                    }
+
+
+                }
+            }
+            catch (Exception hata)
+            {
+                SaveLogFile(MethodBase.GetCurrentMethod(), hata);
+                iErr = TErrors.EXCEPTION;
+            }
+
+            return iErr;
         }
 
         protected int tcpIsHGSDaireAracExistInWhitelist(ushort DaireNo, Byte AracNo, out int IndexNo)
-        { 
-        
-        int iErr;
-        
-        byte[] SendData = new byte[512];
-        byte[] RecData = new byte[512];
+        {
 
-        IndexNo = 0;
-                try
+            int iErr;
+
+            byte[] SendData = new byte[512];
+            byte[] RecData = new byte[512];
+
+            IndexNo = 0;
+            try
+            {
+
+                ToPrBytes(DaireNo, ref SendData, 0);
+                SendData[2] = (byte)AracNo;
+                SendData[3] = 0;
+
+                iErr = ExecuteCmd(3, 49, 49, 4, SendData, out RecData, 2000, 3);
+
+
+                if (iErr == 0)
                 {
-
-                    ToPrBytes(DaireNo, ref SendData, 0);
-                    SendData[2] = (byte)AracNo;
-                    SendData[3] = 0;
-
-                    iErr = ExecuteCmd(3, 49, 49, 4, SendData, out RecData, 2000, 3);
-
-
-                    if (iErr == 0)
-                    {
-                        IndexNo = prBytesToushort(RecData, 0);
-                    }
-
-                }
-                catch (Exception hata)
-                {
-            
-                     SaveLogFile(MethodBase.GetCurrentMethod(), hata);
-                        iErr = TErrors.EXCEPTION;
+                    IndexNo = prBytesToushort(RecData, 0);
                 }
 
+            }
+            catch (Exception hata)
+            {
 
-                return iErr;
+                SaveLogFile(MethodBase.GetCurrentMethod(), hata);
+                iErr = TErrors.EXCEPTION;
+            }
+
+
+            return iErr;
 
         }
 
@@ -882,16 +906,16 @@ namespace PerioTCPRdr
 
             string CardId;
             Recs = tempRecs;
-            
+
             try
             {
                 iErr = tcpGetHeadTailCapacity(out Head, out Tail, out Capacity);
                 if (iErr == 0)
                 {
                     if (Head > Tail)
-                    CountToTransfer = (Head - Tail);
+                        CountToTransfer = (Head - Tail);
                     else
-                    CountToTransfer = (Capacity - Tail + Head);
+                        CountToTransfer = (Capacity - Tail + Head);
                     CountPerTime = 12;
                     StartFrom = Tail;
                     do
@@ -908,7 +932,7 @@ namespace PerioTCPRdr
                             1,  // DataLen
                             SendData, out RecData // SelectTimeOut
                             );
-                       
+
                         if (iErr == 0)
                         {
                             notConfRecs.Count = RecData[0];
@@ -957,8 +981,7 @@ namespace PerioTCPRdr
         }
 
 
-
-        protected int tcpGetHGSWhitelistWithCardID(String CardID , out THGSArac rArac, out int IndexNo)
+        protected int tcpGetHGSWhitelistWithCardID(String CardID, out THGSArac rArac, out int IndexNo)
         {
             int iErr = 0;
             byte[] SendData = new byte[512];
@@ -968,28 +991,28 @@ namespace PerioTCPRdr
             THGSArac tmpSettings = new THGSArac();
             rArac = tmpSettings;
 
-            ToPrBytesFromHex(CardID,ref SendData,0);
-            iErr = ExecuteCmd(3, 42, 42, 8,  SendData, out RecData );
+            ToPrBytesFromHex(CardID, ref SendData, 0);
+            iErr = ExecuteCmd(3, 42, 42, 8, SendData, out RecData);
 
 
-            if (iErr==0)
+            if (iErr == 0)
             {
-                rArac.CardID = prBytesToHex(RecData,0,8);
-                rArac.Name = prByteToString(RecData,8,18).Trim();
+                rArac.CardID = prBytesToHex(RecData, 0, 8);
+                rArac.Name = prByteToString(RecData, 8, 18).Trim();
                 for (int i = 26; i < 32; i++)
-			    {
-                        
-                rArac.TimeAccessMask[i-26] = RecData[i];
-                rArac.Daire = prBytesToushort(RecData,33);
-                rArac.AracNo = RecData[35];
-                rArac.EndDate = new DateTime(RecData[41] + 2000, RecData[40], RecData[39]); //EncodeDate(RecData[41]+2000,RecData[40],RecData[39]);
-                rArac.AccessDevice = prBytesToBoolean(RecData,42);
-                rArac.APBEnabled = prBytesToBoolean(RecData,43);
-                rArac.ATCEnabled = prBytesToBoolean(RecData,44);
-                rArac.AccessCardEnabled = prBytesToBoolean(RecData,45);
-                IndexNo = prBytesToushort(RecData, 52);
-			    }
-                
+                {
+
+                    rArac.TimeAccessMask[i - 26] = RecData[i];
+                    rArac.Daire = prBytesToushort(RecData, 33);
+                    rArac.AracNo = RecData[35];
+                    rArac.EndDate = new DateTime(RecData[41] + 2000, RecData[40], RecData[39]); //EncodeDate(RecData[41]+2000,RecData[40],RecData[39]);
+                    rArac.AccessDevice = prBytesToBoolean(RecData, 42);
+                    rArac.APBEnabled = prBytesToBoolean(RecData, 43);
+                    rArac.ATCEnabled = prBytesToBoolean(RecData, 44);
+                    rArac.AccessCardEnabled = prBytesToBoolean(RecData, 45);
+                    IndexNo = prBytesToushort(RecData, 52);
+                }
+
 
             }
 
@@ -1070,7 +1093,7 @@ namespace PerioTCPRdr
         }
 
 
-        protected int tcpIsHGSCardIDExistInWhitelist(String CardID, ushort DaireNo,  out THGSArac rArac , out int IndexNo )
+        protected int tcpIsHGSCardIDExistInWhitelist(String CardID, ushort DaireNo, out THGSArac rArac, out int IndexNo)
         {
             int iErr = 0;
             byte[] SendData = new byte[512];
@@ -1082,29 +1105,29 @@ namespace PerioTCPRdr
             rArac = tmpSettings;
             try
             {
-                ToPrBytesFromHex(CardID,ref SendData,0);
+                ToPrBytesFromHex(CardID, ref SendData, 0);
 
-                 iErr = ExecuteCmd(3, 42, 42, 8,  SendData, out RecData);
+                iErr = ExecuteCmd(3, 42, 42, 8, SendData, out RecData);
 
-                 if (iErr == 0)
-                 { 
-                    rArac.CardID = prBytesToHex(RecData,0,8);
-                    rArac.Name = prByteToString(RecData,8,18);
+                if (iErr == 0)
+                {
+                    rArac.CardID = prBytesToHex(RecData, 0, 8);
+                    rArac.Name = prByteToString(RecData, 8, 18);
                     //for I := 26 to 32 do
 
                     for (int i = 26; i <= 32; i++)
-                    {rArac.TimeAccessMask[i - 26] = RecData[i];}
+                    { rArac.TimeAccessMask[i - 26] = RecData[i]; }
 
-                    rArac.Daire = prBytesToushort(RecData,33);
+                    rArac.Daire = prBytesToushort(RecData, 33);
                     rArac.AracNo = RecData[35];
                     rArac.EndDate = new DateTime(RecData[41] + 2000, RecData[40], RecData[39]);
-                    rArac.AccessDevice = prBytesToBoolean(RecData,42);
-                    rArac.APBEnabled = prBytesToBoolean(RecData,43);
-                    rArac.ATCEnabled = prBytesToBoolean(RecData,44);
-                    rArac.AccessCardEnabled = prBytesToBoolean(RecData,45);
-                    IndexNo = prBytesToushort(RecData,52);
-                 }
-                 
+                    rArac.AccessDevice = prBytesToBoolean(RecData, 42);
+                    rArac.APBEnabled = prBytesToBoolean(RecData, 43);
+                    rArac.ATCEnabled = prBytesToBoolean(RecData, 44);
+                    rArac.AccessCardEnabled = prBytesToBoolean(RecData, 45);
+                    IndexNo = prBytesToushort(RecData, 52);
+                }
+
 
 
             }
@@ -1118,8 +1141,105 @@ namespace PerioTCPRdr
 
         }
 
+        protected int tcpSetPersonTZList(string CardID, TPersTZList PersTZList) // CMD 3.65
+        {
+            int iErr;
+            int Day, Month, Year, sHour, sMin, eHour, eMin;
+            byte[] SendData = new byte[512];
+            byte[] RecData = new byte[512];
+            
+            ToPrBytesFromHex(CardID, ref SendData, 0, 14);
+            try
+            {
 
-        protected int tcpIsHGSCardIDExistInWhitelist(String CardID , out int IndexNo)
+                for (int i = 0; i <= 4; i++)
+                {
+                    Day = PersTZList.List[i].Day.Day;
+                    Month = PersTZList.List[i].Day.Month;
+                    Year = PersTZList.List[i].Day.Year;
+                    SendData[7 + 36 * i + 0] = (byte)Day;
+                    SendData[7 + 36 * i + 1] = (byte)Month;
+                    SendData[7 + 36 * i + 2] = (byte)(Year - 2000);
+                    SendData[7 + 36 * i + 3] = PersTZList.List[i].TZListNo;
+
+
+                    for (int j = 0; j < 8; j++)
+                    {
+                        //DecodeTime(PersTZList.List[i].Part[j].StartTime, sHour, sMin, Sec, MSec);
+                        //DecodeTime(PersTZList.List[i].Part[j].EndTime, eHour, eMin, Sec, MSec);
+                        sHour = PersTZList.List[i].Part[j].StartTime.Hours;
+                        sMin = PersTZList.List[i].Part[j].StartTime.Minutes;
+                        eHour = PersTZList.List[i].Part[j].EndTime.Hours;
+                        eMin = PersTZList.List[i].Part[j].EndTime.Minutes;
+                        SendData[7 + (36 * i + 4) + (j * 4) + 0] = (byte)sHour;
+                        SendData[7 + (36 * i + 4) + (j * 4) + 1] = (byte)sMin;
+                        SendData[7 + (36 * i + 4) + (j * 4) + 2] = (byte)eHour;
+                        SendData[7 + (36 * i + 4) + (j * 4) + 3] = (byte)eMin;
+                    }
+                }
+
+                iErr= ExecuteCmd(3, // CmdNo
+                                 66, // SubCmdNo
+                                 66, // Acknowledge
+                                 187,  // DataLen
+                                 SendData, out RecData // SelectTimeOut
+                                 );
+
+            }
+            catch (Exception ex)
+            {
+                iErr = TErrors.EXCEPTION;
+                SaveLogFile(MethodBase.GetCurrentMethod(), ex);
+            }
+
+            return iErr;
+        }
+
+
+        protected int tcpGetPersonTZList(string CardID, out TPersTZList PersTZList) // CMD 3.65
+        {
+            int iErr;
+            int Day,Month,Year,sHour, sMin,eHour, eMin;
+            byte[] SendData = new byte[512];
+            byte[] RecData = new byte[512];
+            TPersTZList oTPersTZList = new TPersTZList();
+            ToPrBytesFromHex(CardID, ref SendData, 0,14);
+            try
+            {
+                iErr = ExecuteCmd(3, 65, 65, 7, SendData, out RecData);
+
+                for (int i = 0; i <= 4; i++)
+                {
+                    Day= RecData[36 * i + 0];
+                    Month= RecData[36 * i + 1];
+                    Year= (RecData[36 * i + 2] + 2000);
+                    oTPersTZList.List[i].Day = new DateTime(Year, Month, Day); //EncodeDate(Year, Month, Day);
+                    oTPersTZList.List[i].TZListNo = RecData[36 * i + 3];
+
+                    for (int j = 0; j < 8; j++)
+                    {
+                        sHour= RecData[(36 * i + 4) + (j * 4) + 0];
+                        sMin= RecData[(36 * i + 4) + (j * 4) + 1];
+
+                        eHour= RecData[(36 * i + 4) + (j * 4) + 2];
+                        eMin= RecData[(36 * i + 4) + (j * 4) + 3];
+
+                        oTPersTZList.List[i].Part[j].StartTime = new TimeSpan(1,sHour, sMin, 0, 0);// EncodeTime(sHour, sMin, 0, 0);
+                        oTPersTZList.List[i].Part[j].EndTime = new TimeSpan(1,eHour, eMin, 0);  //EncodeTime(eHour, eMin, 0, 0);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                iErr = TErrors.EXCEPTION;
+                SaveLogFile(MethodBase.GetCurrentMethod(), ex);
+            }
+            PersTZList = oTPersTZList;
+            return iErr;
+        }
+
+        protected int tcpIsHGSCardIDExistInWhitelist(String CardID, out int IndexNo)
         {
             int iErr = 0;
             byte[] SendData = new byte[512];
@@ -1127,7 +1247,7 @@ namespace PerioTCPRdr
             IndexNo = 0;
 
 
-            ToPrBytesFromHex(CardID, ref SendData,0);
+            ToPrBytesFromHex(CardID, ref SendData, 0);
 
             try
             {
@@ -1145,12 +1265,12 @@ namespace PerioTCPRdr
             }
 
             return iErr;
-            
+
 
         }
 
 
-        protected int tcpDeleteHGSWhitelistWithCardID(String CardID , out int IndexNo)
+        protected int tcpDeleteHGSWhitelistWithCardID(String CardID, out int IndexNo)
         {
             int iErr = 0;
             //int OldCmdRetry=0;
@@ -1161,14 +1281,14 @@ namespace PerioTCPRdr
             try
             {
 
-                ToPrBytesFromHex(CardID,ref SendData,0);
-                iErr = ExecuteCmd(3, 44, 44, 8, SendData, out RecData ,2000,1);
+                ToPrBytesFromHex(CardID, ref SendData, 0);
+                iErr = ExecuteCmd(3, 44, 44, 8, SendData, out RecData, 2000, 1);
                 //OldCmdretry = CommandRetry;
                 CommandRetry = 1;
 
-                if (iErr==0)
+                if (iErr == 0)
                 {
-                  IndexNo = prBytesToushort(RecData,0);  
+                    IndexNo = prBytesToushort(RecData, 0);
                 }
 
             }
@@ -1181,19 +1301,19 @@ namespace PerioTCPRdr
             return iErr;
 
         }
-        
 
 
 
-        public int DeleteHGSWhitelistWithCardID(String CardID , out int IndexNum )
-        { 
-        int iErr;
-        int lclErr;
-        IndexNum = 0;
+
+        public int DeleteHGSWhitelistWithCardID(String CardID, out int IndexNum)
+        {
+            int iErr;
+            int lclErr;
+            IndexNum = 0;
 
             try
             {
-            lclErr = Convert.ToInt16(IsCardIDExistHGSInWhitelistX(CardID,out IndexNum));
+                lclErr = Convert.ToInt16(IsCardIDExistHGSInWhitelistX(CardID, out IndexNum));
 
                 switch (lclErr)
                 {
@@ -1205,7 +1325,7 @@ namespace PerioTCPRdr
                         iErr = tcpDeleteHGSWhitelistWithCardID(CardID, out IndexNum);
                         break;
 
-                      default:
+                    default:
                         iErr = lclErr;
                         break;
                 }
@@ -1232,7 +1352,7 @@ namespace PerioTCPRdr
         }
 
 
-        public int tcpIsHGSCardIDDaireAracExistInWhitelist(String CardID , ushort DaireNo , byte AracNo, out int IndexNo )
+        public int tcpIsHGSCardIDDaireAracExistInWhitelist(String CardID, ushort DaireNo, byte AracNo, out int IndexNo)
         {
 
             int iErr;
@@ -1242,21 +1362,21 @@ namespace PerioTCPRdr
 
             try
             {
-                ToPrBytesFromHex(CardID, ref SendData,0);
-                ToPrBytes(DaireNo,ref SendData,8);
+                ToPrBytesFromHex(CardID, ref SendData, 0);
+                ToPrBytes(DaireNo, ref SendData, 8);
                 SendData[10] = AracNo;
                 SendData[11] = 0;
-                iErr = ExecuteCmd(3, 47, 47, 12,  SendData, out RecData ,2000,3);
+                iErr = ExecuteCmd(3, 47, 47, 12, SendData, out RecData, 2000, 3);
 
-                if (iErr==23)
+                if (iErr == 23)
                 {
-                    IndexNo = prBytesToushort(RecData,0);
+                    IndexNo = prBytesToushort(RecData, 0);
                 }
 
             }
             catch (Exception hata)
             {
-                 SaveLogFile(MethodBase.GetCurrentMethod(), hata);
+                SaveLogFile(MethodBase.GetCurrentMethod(), hata);
                 iErr = TErrors.EXCEPTION;
             }
 
@@ -1264,7 +1384,7 @@ namespace PerioTCPRdr
 
         }
 
-        protected int tcpEditHGSWhitelistWithCardID(THGSArac rArac ,  out int IndexNo)
+        protected int tcpEditHGSWhitelistWithCardID(THGSArac rArac, out int IndexNo)
         {
             int iErr = 0;
             byte[] SendData = new byte[512];
@@ -1273,33 +1393,33 @@ namespace PerioTCPRdr
 
             try
             {
-             ToPrBytesFromHex(rArac.CardID,ref SendData,0);
-             ToPrBytes(rArac.Name,ref SendData,8,18);
+                ToPrBytesFromHex(rArac.CardID, ref SendData, 0);
+                ToPrBytes(rArac.Name, ref SendData, 8, 18);
                 for (int i = 0; i <= 60; i++)
-			    {
-			        SendData[i+26] = Convert.ToByte(rArac.TimeAccessMask[i]);
-                    ToPrBytes(rArac.Daire,ref SendData,33);
+                {
+                    SendData[i + 26] = Convert.ToByte(rArac.TimeAccessMask[i]);
+                    ToPrBytes(rArac.Daire, ref SendData, 33);
                     SendData[35] = rArac.AracNo;
                     SendData[36] = 0;
                     SendData[37] = 0;
                     SendData[38] = 0;
-                    ToPrBytes(Convert.ToString(rArac.EndDate),ref SendData,39);
-                    ToPrBytes(rArac.AccessDevice,ref SendData,42);
-                    ToPrBytes(rArac.APBEnabled,ref SendData,43);
-                    ToPrBytes(rArac.ATCEnabled,ref SendData,44);
-                    ToPrBytes(rArac.AccessCardEnabled,ref SendData,45);
-			    }
+                    ToPrBytes(Convert.ToString(rArac.EndDate), ref SendData, 39);
+                    ToPrBytes(rArac.AccessDevice, ref SendData, 42);
+                    ToPrBytes(rArac.APBEnabled, ref SendData, 43);
+                    ToPrBytes(rArac.ATCEnabled, ref SendData, 44);
+                    ToPrBytes(rArac.AccessCardEnabled, ref SendData, 45);
+                }
 
                 for (int j = 46; j <= 51; j++)
                 {
-                 SendData[j] = 0;    
+                    SendData[j] = 0;
                 }
 
-                iErr = ExecuteCmd(3, 43, 43, 52,  SendData, out RecData );
+                iErr = ExecuteCmd(3, 43, 43, 52, SendData, out RecData);
 
-                if (iErr==0)
+                if (iErr == 0)
                 {
-                    IndexNo = prBytesToushort(RecData,0);
+                    IndexNo = prBytesToushort(RecData, 0);
                 }
 
             }
@@ -1314,7 +1434,7 @@ namespace PerioTCPRdr
 
         }
 
-        protected int tcpAddHGSWhitelist(THGSArac rArac , out int IndexNo)
+        protected int tcpAddHGSWhitelist(THGSArac rArac, out int IndexNo)
         {
             int iErr = 0;
             int OldCmdRetry, lclErr, CommandRetry = 0;
@@ -1323,64 +1443,64 @@ namespace PerioTCPRdr
             IndexNo = 0;
 
             OldCmdRetry = CommandRetry;
-                CommandRetry = 1;
+            CommandRetry = 1;
 
-                try
+            try
+            {
+                ToPrBytesFromHex(rArac.CardID, ref SendData, 0);
+                ToPrBytes(rArac.Name, ref SendData, 8, 18);
+
+                for (int i = 0; i < 6; i++)
                 {
-                  ToPrBytesFromHex(rArac.CardID,ref SendData,0);
-                  ToPrBytes(rArac.Name,ref SendData,8,18);
-                  
-                  for (int i = 0; i < 6; i++)
-                  {
-                  SendData[i+26] = Convert.ToByte(rArac.TimeAccessMask[i]);
-                  }
-
-                  ToPrBytes(rArac.Daire, ref SendData, 33);
-                  SendData[35] = rArac.AracNo;
-                  SendData[36] = 0;
-                  SendData[37] = 0;
-                  SendData[38] = 0;
-                  ToPrBytes(Convert.ToString(rArac.EndDate), ref SendData, 39);
-                  ToPrBytes(rArac.AccessDevice, ref SendData, 42);
-                  ToPrBytes(rArac.APBEnabled, ref SendData, 43);
-                  ToPrBytes(rArac.ATCEnabled, ref SendData, 44);
-                  ToPrBytes(rArac.AccessCardEnabled, ref SendData, 45);
-
-                  for (int i = 46; i < 51; i++)
-                  {
-                      SendData[i] = 0;
-                  }
-                    
-                    iErr = ExecuteCmd(3, 41, 41, 52,  SendData, out RecData ,2000,1);
-
-                    if (iErr==0)
-                    {
-                        IndexNo = prBytesToushort(RecData,0);
-                    }
-
+                    SendData[i + 26] = Convert.ToByte(rArac.TimeAccessMask[i]);
                 }
-                catch (Exception hata)
+
+                ToPrBytes(rArac.Daire, ref SendData, 33);
+                SendData[35] = rArac.AracNo;
+                SendData[36] = 0;
+                SendData[37] = 0;
+                SendData[38] = 0;
+                ToPrBytes(Convert.ToString(rArac.EndDate), ref SendData, 39);
+                ToPrBytes(rArac.AccessDevice, ref SendData, 42);
+                ToPrBytes(rArac.APBEnabled, ref SendData, 43);
+                ToPrBytes(rArac.ATCEnabled, ref SendData, 44);
+                ToPrBytes(rArac.AccessCardEnabled, ref SendData, 45);
+
+                for (int i = 46; i < 51; i++)
                 {
-                    SaveLogFile(MethodBase.GetCurrentMethod(), hata);
-                    iErr = TErrors.EXCEPTION;
+                    SendData[i] = 0;
                 }
-                CommandRetry = OldCmdRetry;
 
-                return iErr;
+                iErr = ExecuteCmd(3, 41, 41, 52, SendData, out RecData, 2000, 1);
+
+                if (iErr == 0)
+                {
+                    IndexNo = prBytesToushort(RecData, 0);
+                }
+
+            }
+            catch (Exception hata)
+            {
+                SaveLogFile(MethodBase.GetCurrentMethod(), hata);
+                iErr = TErrors.EXCEPTION;
+            }
+            CommandRetry = OldCmdRetry;
+
+            return iErr;
 
         }
 
-        public int AddHGSWhitelist(THGSArac rArac, out int IndexNum , Boolean IfExistEdit =false)
+        public int AddHGSWhitelist(THGSArac rArac, out int IndexNum, Boolean IfExistEdit = false)
         {
             int iErr, lclErr = 0;
             byte[] SendData = new byte[512];
             byte[] RecData = new byte[512];
             //IndexNum = 0;
-            
 
-            lclErr = IsHGSCardIDDaireAracExistInWhitelistX(Convert.ToString(rArac.CardID), (ushort)rArac.Daire, (byte)rArac.AracNo,out IndexNum);
-                   //IsHGSCardIDDaireAracExistInWhitelistX
-                   //IsHGSCardIDDaireAracExistInWhitelistX
+
+            lclErr = IsHGSCardIDDaireAracExistInWhitelistX(Convert.ToString(rArac.CardID), (ushort)rArac.Daire, (byte)rArac.AracNo, out IndexNum);
+            //IsHGSCardIDDaireAracExistInWhitelistX
+            //IsHGSCardIDDaireAracExistInWhitelistX
 
             switch (lclErr)
             {
@@ -1403,7 +1523,7 @@ namespace PerioTCPRdr
         }
 
 
-        protected int tcpSetHGSDaireParkHak(String CardID , ushort DaireNo , Byte AracNo , out int IndexNo)
+        protected int tcpSetHGSDaireParkHak(String CardID, ushort DaireNo, Byte AracNo, out int IndexNo)
         {
             int iErr = 0;
             byte[] SendData = new byte[512];
@@ -1415,13 +1535,13 @@ namespace PerioTCPRdr
 
             try
             {
-                if (iErr==0)
+                if (iErr == 0)
                 {
-                    ToPrBytesFromHex(CardID, ref SendData,0);
-                    ToPrBytes(DaireNo,ref SendData,8);
+                    ToPrBytesFromHex(CardID, ref SendData, 0);
+                    ToPrBytes(DaireNo, ref SendData, 8);
                     SendData[10] = AracNo;
                     SendData[11] = 0;
-                    iErr = ExecuteCmd(3, 47, 47, 12, SendData, out RecData ,2000,3);
+                    iErr = ExecuteCmd(3, 47, 47, 12, SendData, out RecData, 2000, 3);
 
                 }
 
@@ -1437,7 +1557,7 @@ namespace PerioTCPRdr
         }
 
 
-        
+
 
         protected int tcpSetHGSDaireParkHak(uint rDaire, Byte rHak)
         {
@@ -1470,7 +1590,7 @@ namespace PerioTCPRdr
         }
 
 
-        protected int tcpGetHGSDaireParkHak(uint rDaire , out Byte rHak)
+        protected int tcpGetHGSDaireParkHak(uint rDaire, out Byte rHak)
         {
             int iErr = 0;
             byte[] SendData = new byte[512];
@@ -1481,11 +1601,11 @@ namespace PerioTCPRdr
             try
             {
 
-                ToPrBytes(rDaire,ref SendData,0);
-                iErr = ExecuteCmd(3, 53, 53, 2, SendData, out RecData );
+                ToPrBytes(rDaire, ref SendData, 0);
+                iErr = ExecuteCmd(3, 53, 53, 2, SendData, out RecData);
 
 
-                if (iErr==0)
+                if (iErr == 0)
                 {
                     rHak = RecData[0];
                 }
@@ -1493,7 +1613,7 @@ namespace PerioTCPRdr
             }
             catch (Exception hata)
             {
-                
+
                 SaveLogFile(MethodBase.GetCurrentMethod(), hata);
                 iErr = TErrors.EXCEPTION;
             }
@@ -1513,7 +1633,7 @@ namespace PerioTCPRdr
             try
             {
 
-                SendData[0] = HGS_Settings.PaketBoyu ;
+                SendData[0] = HGS_Settings.PaketBoyu;
                 SendData[1] = HGS_Settings.CardBaslangic;
                 SendData[2] = HGS_Settings.CardBoyu;
                 SendData[3] = HGS_Settings.TrCikisSure1;
@@ -1521,7 +1641,7 @@ namespace PerioTCPRdr
                 SendData[5] = HGS_Settings.ProgramMode;
                 SendData[6] = HGS_Settings.DiziEklemeSure1;
                 SendData[7] = HGS_Settings.DiziEklemeSure2;
-                ToPrBytes(HGS_Settings.ZamanKisitEnb,ref  SendData,8);
+                ToPrBytes(HGS_Settings.ZamanKisitEnb, ref SendData, 8);
                 SendData[9] = HGS_Settings.AntenPower1;
                 SendData[10] = HGS_Settings.AntenPower2;
                 SendData[11] = HGS_Settings.AntenTanitim;
@@ -1530,7 +1650,7 @@ namespace PerioTCPRdr
                 SendData[13] = HGS_Settings.AppType;
 
 
-                iErr = ExecuteCmd(3,40, 40, 15, SendData, out RecData );
+                iErr = ExecuteCmd(3, 40, 40, 15, SendData, out RecData);
 
             }
             catch (Exception hata)
@@ -1541,7 +1661,7 @@ namespace PerioTCPRdr
 
             return iErr;
 
-        
+
         }
 
 
@@ -1552,38 +1672,38 @@ namespace PerioTCPRdr
             byte[] SendData = new byte[512];
             byte[] RecData = new byte[512];
 
-            
+
             THGS_Settings tmpSettings = new THGS_Settings();
             HGS_Settings = tmpSettings;
 
             try
             {
-                iErr = ExecuteCmd(3, 39, 39, 0, SendData, out RecData );
+                iErr = ExecuteCmd(3, 39, 39, 0, SendData, out RecData);
 
 
-                if (iErr==0)
+                if (iErr == 0)
                 {
-                  HGS_Settings.PaketBoyu        = RecData[0];
-                  HGS_Settings.CardBaslangic    = RecData[1];
-                  HGS_Settings.CardBoyu         = RecData[2];
-                  HGS_Settings.TrCikisSure1     = RecData[3];
-                  HGS_Settings.TrCikisSure2     = RecData[4];
-                  HGS_Settings.ProgramMode      = RecData[5];
-                  HGS_Settings.DiziEklemeSure1  = RecData[6];
-                  HGS_Settings.DiziEklemeSure2  = RecData[7];
-                  HGS_Settings.ZamanKisitEnb    = Convert.ToBoolean(RecData[8]);
-                  HGS_Settings.AntenPower1      = RecData[9];
-                  HGS_Settings.AntenPower2      = RecData[10];
-                  HGS_Settings.AntenTanitim     = RecData[11];
-                  HGS_Settings.DefMaksimumArac  = RecData[12];
-                  HGS_Settings.DefAntiPassPack  = RecData[13];
-                  HGS_Settings.AppType          = RecData[14];
+                    HGS_Settings.PaketBoyu = RecData[0];
+                    HGS_Settings.CardBaslangic = RecData[1];
+                    HGS_Settings.CardBoyu = RecData[2];
+                    HGS_Settings.TrCikisSure1 = RecData[3];
+                    HGS_Settings.TrCikisSure2 = RecData[4];
+                    HGS_Settings.ProgramMode = RecData[5];
+                    HGS_Settings.DiziEklemeSure1 = RecData[6];
+                    HGS_Settings.DiziEklemeSure2 = RecData[7];
+                    HGS_Settings.ZamanKisitEnb = Convert.ToBoolean(RecData[8]);
+                    HGS_Settings.AntenPower1 = RecData[9];
+                    HGS_Settings.AntenPower2 = RecData[10];
+                    HGS_Settings.AntenTanitim = RecData[11];
+                    HGS_Settings.DefMaksimumArac = RecData[12];
+                    HGS_Settings.DefAntiPassPack = RecData[13];
+                    HGS_Settings.AppType = RecData[14];
                 }
 
             }
             catch (Exception hata)
             {
-                
+
                 SaveLogFile(MethodBase.GetCurrentMethod(), hata);
                 iErr = TErrors.EXCEPTION;
             }
@@ -1604,10 +1724,10 @@ namespace PerioTCPRdr
 
             for (int i = 0; i < 29; i++)
             {
-              SendData[i*4] =  (byte)(Holidays.List[i].Date).Day;
-              SendData[i * 4 + 1] = (byte)(Holidays.List[i].Date).Month;
-              SendData[i * 4 + 2] = (byte)((Holidays.List[i].Date).Year - 2000);
-              SendData[i*4+3] = Holidays.List[i].OOSTableNo;
+                SendData[i * 4] = (byte)(Holidays.List[i].Date).Day;
+                SendData[i * 4 + 1] = (byte)(Holidays.List[i].Date).Month;
+                SendData[i * 4 + 2] = (byte)((Holidays.List[i].Date).Year - 2000);
+                SendData[i * 4 + 3] = Holidays.List[i].OOSTableNo;
             }
             try
             {
@@ -1621,7 +1741,7 @@ namespace PerioTCPRdr
 
 
             return iErr;
-        
+
         }
 
 
@@ -1637,14 +1757,14 @@ namespace PerioTCPRdr
 
             try
             {
-                iErr = ExecuteCmd(3, 33, 33, 0, SendData, out RecData );
+                iErr = ExecuteCmd(3, 33, 33, 0, SendData, out RecData);
 
-                if (iErr==0)
+                if (iErr == 0)
                 {
                     for (int i = 0; i < 29; i++)
                     {
-                     Holidays.List[i].Date = new DateTime(2000,1,1,RecData[i*4+2]+2000,RecData[i*4+1],RecData[i*4]);
-                     Holidays.List[i].OOSTableNo = RecData[i*4+3];
+                        Holidays.List[i].Date = new DateTime(2000, 1, 1, RecData[i * 4 + 2] + 2000, RecData[i * 4 + 1], RecData[i * 4]);
+                        Holidays.List[i].OOSTableNo = RecData[i * 4 + 3];
                     }
                 }
 
@@ -1675,13 +1795,13 @@ namespace PerioTCPRdr
             {
                 iErr = ExecuteCmd(3, 17, 17, 0, SendData, out RecData);
 
-                if (iErr==0)
+                if (iErr == 0)
                 {
-                    deviceDate = new DateTime(RecData[5]+2000, RecData[4], RecData[3], RecData[0], RecData[1], RecData[2],0);
-                    headTail   = (byte)RecData[6];
-                    head =       (uint)RecData[7] + (uint)(RecData[8] * 256) + (uint)(RecData[9] * 256 * 256);
-                    tail =       (uint)RecData[10] + (uint)(RecData[11] * 256) + (uint)(RecData[12] * 256 * 256);
-                    Capacity =   (uint)RecData[13] + (uint)(RecData[14] * 256) + (uint)(RecData[15] * 256 * 256);
+                    deviceDate = new DateTime(RecData[5] + 2000, RecData[4], RecData[3], RecData[0], RecData[1], RecData[2], 0);
+                    headTail = (byte)RecData[6];
+                    head = (uint)RecData[7] + (uint)(RecData[8] * 256) + (uint)(RecData[9] * 256 * 256);
+                    tail = (uint)RecData[10] + (uint)(RecData[11] * 256) + (uint)(RecData[12] * 256 * 256);
+                    Capacity = (uint)RecData[13] + (uint)(RecData[14] * 256) + (uint)(RecData[15] * 256 * 256);
                 }
 
 
@@ -1708,24 +1828,24 @@ namespace PerioTCPRdr
 
             for (int i = 0; i < 23; i++)
             {
-             SendData[i*3+1] =  (byte)(BellTable.List[i].StartTime).Hour;
-             SendData[i * 3 + 2] = (byte)(BellTable.List[i].StartTime).Minute;
-             SendData[i*3+3] = BellTable.List[i].Duration;
+                SendData[i * 3 + 1] = (byte)(BellTable.List[i].StartTime).Hour;
+                SendData[i * 3 + 2] = (byte)(BellTable.List[i].StartTime).Minute;
+                SendData[i * 3 + 3] = BellTable.List[i].Duration;
             }
 
-                try
-                {
-                    iErr = ExecuteCmd(3, 12, 12, 73, SendData, out RecData);
-                }
-                catch (Exception hata)
-                {
+            try
+            {
+                iErr = ExecuteCmd(3, 12, 12, 73, SendData, out RecData);
+            }
+            catch (Exception hata)
+            {
 
-                    SaveLogFile(MethodBase.GetCurrentMethod(), hata);
-                    iErr = TErrors.EXCEPTION;
-                }
+                SaveLogFile(MethodBase.GetCurrentMethod(), hata);
+                iErr = TErrors.EXCEPTION;
+            }
 
 
-                return iErr;
+            return iErr;
 
 
 
@@ -1749,12 +1869,12 @@ namespace PerioTCPRdr
             {
                 iErr = ExecuteCmd(3, 11, 11, 1, SendData, out RecData);
 
-                if (iErr==0)
+                if (iErr == 0)
                 {
                     for (int i = 0; i < 23; i++)
                     {
-                    BellTable.List[i].StartTime = new DateTime(2000,1,1,RecData[i * 3], RecData[i * 3 + 1], 0, 0);
-                    BellTable.List[i].Duration = RecData[i*3+2];
+                        BellTable.List[i].StartTime = new DateTime(2000, 1, 1, RecData[i * 3], RecData[i * 3 + 1], 0, 0);
+                        BellTable.List[i].Duration = RecData[i * 3 + 2];
                     }
                 }
 
@@ -1904,7 +2024,7 @@ namespace PerioTCPRdr
                 }
                 catch (Exception hata)
                 {
-                    SaveLogFile(MethodBase.GetCurrentMethod(), hata.Data+ " " + hata.Message);
+                    SaveLogFile(MethodBase.GetCurrentMethod(), hata.Data + " " + hata.Message);
                     iErr = TErrors.EXCEPTION;
                 }
             }
@@ -1912,7 +2032,7 @@ namespace PerioTCPRdr
             return iErr;
         }
 
-        protected  int tcpSetBellSettings(TBellSettings rSettings)
+        protected int tcpSetBellSettings(TBellSettings rSettings)
         {
             int iErr = 0;
             byte[] SendData = new byte[512];
@@ -2004,7 +2124,7 @@ namespace PerioTCPRdr
 
             try
             {
-                iErr = ExecuteCmd(3, 8, 8, 112, SendData, out  RecData);
+                iErr = ExecuteCmd(3, 8, 8, 112, SendData, out RecData);
             }
             catch (Exception hata)
             {
@@ -2016,14 +2136,6 @@ namespace PerioTCPRdr
             return iErr;
 
         }
-
-
-       
-
-
-        
-
-
 
         protected int tcpGetOutOfServiceTable(out TOSTable rTOSTable)
         {
@@ -2066,10 +2178,7 @@ namespace PerioTCPRdr
 
         }
 
-
-        
-
-        protected  int tcpSetOutOfServiceSettings(TOutOfServiceSettings rSettings)
+        protected int tcpSetOutOfServiceSettings(TOutOfServiceSettings rSettings)
         {
 
             int iErr = 0;
@@ -2095,9 +2204,9 @@ namespace PerioTCPRdr
 
             return iErr;
         }
-        
 
-        protected  int tcpGetOutOfServiceSettings(out TOutOfServiceSettings rSettings)
+
+        protected int tcpGetOutOfServiceSettings(out TOutOfServiceSettings rSettings)
         {
 
             int iErr = 0;
@@ -2219,7 +2328,9 @@ namespace PerioTCPRdr
                 SendData[3] = rSettings.AccessMode.AccessType;
                 SendData[4] = rSettings.AccessMode.PasswordType;
                 ToPrBytes(rSettings.TimeAccessConstraintEnabled, ref SendData, 5);
-                iErr = ExecuteCmd(3, 2, 2, 6, SendData, out RecData);
+                SendData[6] = rSettings.PersonelTimeZoneMode;
+                iErr = ExecuteCmd(3, 2, 2, 7, SendData, out RecData);
+
             }
             catch (Exception hata)
             {
@@ -2253,18 +2364,18 @@ namespace PerioTCPRdr
                     result.InsNode.Adress = prBytesTouint(RecData, 12);
                     for (int i = 0; i < 7; i++)
                         result.InsNode.Value[i] = RecData[i + 16];
-                    result.InsNode.Color  = RecData[23];
-                    result.InsNode.Left   = prBytesTouint(RecData, 24);
-                    result.InsNode.Right  = prBytesTouint(RecData, 28);
+                    result.InsNode.Color = RecData[23];
+                    result.InsNode.Left = prBytesTouint(RecData, 24);
+                    result.InsNode.Right = prBytesTouint(RecData, 28);
                     result.InsNode.Parent = prBytesTouint(RecData, 32);
                     result.DelNode.Adress = prBytesTouint(RecData, 36);
                     for (int i = 0; i < 7; i++)
                         result.DelNode.Value[i] = RecData[i + 40];
 
                     result.DelNode.Color = RecData[47];
-                    result.DelNode.Left  = prBytesTouint(RecData, 48);
+                    result.DelNode.Left = prBytesTouint(RecData, 48);
                     result.DelNode.Right = prBytesTouint(RecData, 52);
-                    result.DelNode.Parent= prBytesTouint(RecData, 56);
+                    result.DelNode.Parent = prBytesTouint(RecData, 56);
                 }
 
             }
@@ -2298,8 +2409,8 @@ namespace PerioTCPRdr
                     SendData[i + 16] = WhiteListStatus.InsNode.Value[i];
 
                 SendData[23] = WhiteListStatus.InsNode.Color;
-                ToPrBytes(WhiteListStatus.InsNode.Left,ref  SendData, 24);
-                ToPrBytes(WhiteListStatus.InsNode.Right,ref  SendData, 28);
+                ToPrBytes(WhiteListStatus.InsNode.Left, ref SendData, 24);
+                ToPrBytes(WhiteListStatus.InsNode.Right, ref SendData, 28);
                 ToPrBytes(WhiteListStatus.InsNode.Parent, ref SendData, 32);
                 ToPrBytes(WhiteListStatus.DelNode.Adress, ref SendData, 36);
 
@@ -2309,8 +2420,8 @@ namespace PerioTCPRdr
                 SendData[47] = WhiteListStatus.DelNode.Color;
 
                 ToPrBytes(WhiteListStatus.DelNode.Left, ref SendData, 48);
-                ToPrBytes(WhiteListStatus.DelNode.Right,ref  SendData, 52);
-                ToPrBytes(WhiteListStatus.DelNode.Parent,ref  SendData, 56);
+                ToPrBytes(WhiteListStatus.DelNode.Right, ref SendData, 52);
+                ToPrBytes(WhiteListStatus.DelNode.Parent, ref SendData, 56);
                 iErr = ExecuteCmd(3, 38, 38, 60, SendData, out RecData);
 
             }
@@ -2338,15 +2449,15 @@ namespace PerioTCPRdr
                 ToPrBytes(Address, ref SendData, 0);
                 iErr = ExecuteCmd(3, 61, 61, 4, SendData, out RecData);
 
-                if (iErr==0)
+                if (iErr == 0)
                 {
                     rNode.Adress = prBytesTouint(RecData, 0);
                     for (int i = 0; i < 7; i++)
                         rNode.Value[i] = RecData[i + 4];
 
-                    rNode.Color  = RecData[11];
-                    rNode.Left   = prBytesTouint(RecData, 12);
-                    rNode.Right  = prBytesTouint(RecData, 16);
+                    rNode.Color = RecData[11];
+                    rNode.Left = prBytesTouint(RecData, 12);
+                    rNode.Right = prBytesTouint(RecData, 16);
                     rNode.Parent = prBytesTouint(RecData, 20);
                 }
 
@@ -2375,7 +2486,7 @@ namespace PerioTCPRdr
                 ToPrBytes(Node.Adress, ref SendData, 0);
                 for (int i = 0; i < 7; i++)
                     SendData[i + 4] = Node.Value[i];
-                                       
+
                 SendData[11] = Node.Color;
                 ToPrBytes(Node.Left, ref SendData, 12);
                 ToPrBytes(Node.Right, ref SendData, 16);
@@ -2392,6 +2503,65 @@ namespace PerioTCPRdr
         }
 
 
+        protected int tcpSetStatusMode(byte StatusMode, byte StatusModeType)
+        {
+            int iErr = 0;
+            byte[] SendData = new byte[512];
+            byte[] RecData = new byte[512];
+            try
+            {
+                SendData[0] = StatusMode;
+                SendData[1] = StatusModeType;
+                iErr= ExecuteCmd(3, // CmdNo
+                                 64, // SubCmdNo
+                                 64, // Acknowledge
+                                 2, // DataLen
+                                 SendData, out RecData // SelectTimeOut
+                                 );
+
+            }
+            catch (Exception hata)
+            {
+                SaveLogFile(MethodBase.GetCurrentMethod(), hata);
+                iErr = TErrors.EXCEPTION;
+            }
+
+            return iErr;
+
+        }
+        protected int tcpGetStatusMode(out byte StatusMode, out byte StatusModeType)
+        {
+            int iErr = 0;
+            byte[] SendData = new byte[512];
+            byte[] RecData = new byte[512];
+            StatusMode = 0;
+            StatusModeType = 0;
+            try
+            {
+                iErr= ExecuteCmd(3, // CmdNo
+                                 63, // SubCmdNo
+                                 63, // Acknowledge
+                                 0, // DataLen
+                                 SendData, out RecData // SelectTimeOut
+                                 );
+
+                if (iErr == 0)
+                {
+                    StatusMode= RecData[0];
+                    StatusModeType= RecData[1];
+                }
+
+            }
+            catch (Exception hata)
+            {
+                SaveLogFile(MethodBase.GetCurrentMethod(), hata);
+                iErr = TErrors.EXCEPTION;
+            }
+
+            return iErr;
+
+        }
+
         protected int tcpGetAppGeneralSettings(out TAccessGeneralSettings rSettings)
         {
             int iErr = 0;
@@ -2404,7 +2574,7 @@ namespace PerioTCPRdr
 
             try
             {
-                iErr = ExecuteCmd(3, 1, 1, 0, SendData, out  RecData);
+                iErr = ExecuteCmd(3, 1, 1, 0, SendData, out RecData);
 
                 if (iErr == 0)
                 {
@@ -2413,6 +2583,7 @@ namespace PerioTCPRdr
                     rSettings.AccessMode.AccessType = RecData[3];
                     rSettings.AccessMode.PasswordType = RecData[4];
                     rSettings.TimeAccessConstraintEnabled = prBytesToBoolean(RecData, 5);
+                    rSettings.PersonelTimeZoneMode = RecData[6];
                 }
 
             }
@@ -2460,23 +2631,23 @@ namespace PerioTCPRdr
             return iErr;
         }
 
-   
 
-        protected int tcpAddWhitelist(TPerson rPerson,out uint IndexNo) // CMD 3.18
+
+        protected int tcpAddWhitelist(TPerson rPerson, out uint IndexNo) // CMD 3.18
         {
             int iErr = 0;
             byte[] SendData = new byte[512];
             byte[] RecData = new byte[512];
             IndexNo = 0;
-            
+
             int OldCmdretry = CommandRetry;
 
             try
             {
                 CommandRetry = 1;
 
-                ToPrBytesFromHex(rPerson.CardID,ref SendData,0);
-                ToPrBytes(rPerson.Name,ref SendData,7,18);
+                ToPrBytesFromHex(rPerson.CardID, ref SendData, 0);
+                ToPrBytes(rPerson.Name, ref SendData, 7, 18);
                 SendData[25] = rPerson.TimeZoneListNo;
                 ToPrBytes(rPerson.Code, ref SendData, 26);
                 ToPrBytes(rPerson.Password, ref SendData, 30);
@@ -2529,7 +2700,7 @@ namespace PerioTCPRdr
 
             try
             {
-                ToPrBytesFromHex(CardID,ref SendData, 0);
+                ToPrBytesFromHex(CardID, ref SendData, 0);
                 iErr = ExecuteCmd(3, // CmdNo
                         19, // SubCmdNo
                         19, // Acknowledge
@@ -2537,13 +2708,13 @@ namespace PerioTCPRdr
                         SendData, out RecData);
                 if (iErr == 0)
                 {
-                    rPerson.CardID = prBytesToHex(RecData,0,7);
+                    rPerson.CardID = prBytesToHex(RecData, 0, 7);
                     rPerson.Name = prByteToString(RecData, 7, 18).Trim();
                     rPerson.TimeZoneListNo = RecData[25];
-                    rPerson.Code = prBytesTouint(RecData,26);
-                    rPerson.Password = prBytesToushort(RecData,30);
+                    rPerson.Code = prBytesTouint(RecData, 26);
+                    rPerson.Password = prBytesToushort(RecData, 30);
                     rPerson.EndDate = new DateTime((int)RecData[34] + 2000, (int)RecData[33], (int)RecData[32]);
-                    rPerson.AccessDevice = prBytesToBoolean(RecData,35);
+                    rPerson.AccessDevice = prBytesToBoolean(RecData, 35);
                     rPerson.APBEnabled = prBytesToBoolean(RecData, 36);
                     rPerson.TZEnabled = prBytesToBoolean(RecData, 37);
                     rPerson.AccessCardEnabled = prBytesToBoolean(RecData, 38);
@@ -2555,7 +2726,7 @@ namespace PerioTCPRdr
                     rPerson.MealSettingListNo = RecData[46];
                     rPerson.BlackListCmdNo = RecData[47];
                     rPerson.NeedCmdControl = RecData[48];
-                    IndexNo = prBytesTouint(RecData, 52);                     
+                    IndexNo = prBytesTouint(RecData, 52);
                 }
             }
             catch (Exception e)
@@ -2627,12 +2798,12 @@ namespace PerioTCPRdr
             try
             {
                 CommandRetry = 1;
-                ToPrBytesFromHex(CardID,ref SendData, 0);
+                ToPrBytesFromHex(CardID, ref SendData, 0);
                 iErr = ExecuteCmd(3, // CmdNo
                         23, // SubCmdNo
                         23, // Acknowledge
                         7, // DataLen
-                        SendData, out RecData, 3000,1);
+                        SendData, out RecData, 3000, 1);
                 if (iErr == 0)
                 {
                     IndexNo = prBytesTouint(RecData, 0);
@@ -2663,7 +2834,7 @@ namespace PerioTCPRdr
                         SendData, out RecData, 100 // SelectTimeOut
                         );
                 if (iErr == 0)
-                    WhiteListCnt = prBytesTouint(RecData,0);
+                    WhiteListCnt = prBytesTouint(RecData, 0);
             }
             catch (Exception e)
             {
@@ -2673,7 +2844,7 @@ namespace PerioTCPRdr
             return iErr;
         }
 
-        protected int tcpIsCardIDExistInWhitelist(String CardID,out uint IndexNo)// CMD 3.27
+        protected int tcpIsCardIDExistInWhitelist(String CardID, out uint IndexNo)// CMD 3.27
         {
             int iErr = 0;
             byte[] SendData = new byte[512];
@@ -2682,7 +2853,7 @@ namespace PerioTCPRdr
 
             try
             {
-                ToPrBytesFromHex(CardID,ref SendData, 0);
+                ToPrBytesFromHex(CardID, ref SendData, 0);
 
                 iErr = ExecuteCmd(3, // CmdNo
                         27, // SubCmdNo
@@ -2703,7 +2874,7 @@ namespace PerioTCPRdr
             return iErr;
         }
 
-        protected int tcpReadRecords(uint StartFrom,uint HowMany,out TAccessRecords Recs)// // CMD 3.29
+        protected int tcpReadRecords(uint StartFrom, uint HowMany, out TAccessRecords Recs)// // CMD 3.29
         {
             int iErr = 0;
             byte[] SendData = new byte[512];
@@ -2725,35 +2896,35 @@ namespace PerioTCPRdr
 
                 do
                 {
-                    if ((HowMany - TransferredCount) >= 12 )
-                       TempCountPerTime = 12;
-                    else 
+                    if ((HowMany - TransferredCount) >= 12)
+                        TempCountPerTime = 12;
+                    else
                         TempCountPerTime = (byte)(HowMany - TransferredCount);
 
-                    SendData[0] =  (byte)(TempStartFrom & 0xFF);
-                    SendData[1] =  (byte)((TempStartFrom >> 8) & 0xFF);
-                    SendData[2] =  (byte)((TempStartFrom >> 16) & 0xFF);
-                    SendData[3] =  TempCountPerTime;
+                    SendData[0] = (byte)(TempStartFrom & 0xFF);
+                    SendData[1] = (byte)((TempStartFrom >> 8) & 0xFF);
+                    SendData[2] = (byte)((TempStartFrom >> 16) & 0xFF);
+                    SendData[3] = TempCountPerTime;
                     iErr = ExecuteCmd(3, // CmdNo
                         29, // SubCmdNo
                         29, // Acknowledge
                         4,  // DataLen
-                        SendData,out RecData // SelectTimeOut
+                        SendData, out RecData // SelectTimeOut
                         );
                     if (iErr == 0)
                     {
 
                         ReceivedCount = RecData[0];
                         tempRecs.Count = tempRecs.Count + ReceivedCount;
-        
+
                         //SetLength(tempRecs.raDeviceRecs,tempRecs.Count); Baþta Set ettik deðeri
                         for (int i = 0; i < ReceivedCount; i++)
                         {
                             CardId = "";
-                            CardId = prBytesToHex(RecData,(RecordSize * i)+1,7);
-                            tempRecs.raDeviceRecs[i+TransferredCount].CardID = CardId;
-                            tempRecs.raDeviceRecs[i+TransferredCount].DoorNo     = RecData[(RecordSize*i)+8];
-                            tempRecs.raDeviceRecs[i+TransferredCount].RecordType = RecData[(RecordSize*i)+9];
+                            CardId = prBytesToHex(RecData, (RecordSize * i) + 1, 7);
+                            tempRecs.raDeviceRecs[i + TransferredCount].CardID = CardId;
+                            tempRecs.raDeviceRecs[i + TransferredCount].DoorNo = RecData[(RecordSize * i) + 8];
+                            tempRecs.raDeviceRecs[i + TransferredCount].RecordType = RecData[(RecordSize * i) + 9];
                             tempRecs.raDeviceRecs[i + TransferredCount].TimeDate = prBytesToDateTimeEx(RecData, (RecordSize * i) + 10);
                             //tempRecs.raDeviceRecs[i+TransferredCount].RFU[0]     = RecData[(RecordSize*i)+16];
                             //tempRecs.raDeviceRecs[i+TransferredCount].RFU[1]     = RecData[(RecordSize*i)+17];
@@ -2763,8 +2934,8 @@ namespace PerioTCPRdr
                         TempStartFrom = (TempStartFrom + ReceivedCount);
                     }
                 } while ((TransferredCount < HowMany) && (iErr == 0));
-                if (iErr==0)
-                  Recs = tempRecs;
+                if (iErr == 0)
+                    Recs = tempRecs;
             }
             catch (Exception e)
             {
@@ -2787,7 +2958,7 @@ namespace PerioTCPRdr
                     31, // SubCmdNo
                     31, // Acknowledge
                     1,  // DataLen
-                    SendData,out RecData // SelectTimeOut
+                    SendData, out RecData // SelectTimeOut
                 );
             }
             catch (Exception e)
@@ -2798,7 +2969,7 @@ namespace PerioTCPRdr
             return iErr;
         }
 
-        protected int tcpTransferRecords( out TAccessRecords Recs) // CMD 3.30
+        protected int tcpTransferRecords(out TAccessRecords Recs) // CMD 3.30
         {
             int iErr = 0;
             byte[] SendData = new byte[512];
@@ -2807,9 +2978,9 @@ namespace PerioTCPRdr
             int RecordSize = 17;
             uint TransferredCount = 0;
             //uint ReceivedCount = 0;
-            int Head,Tail,Capacity;
-            int CountToTransfer  ;
-            int CountPerTime,StartFrom;                       
+            int Head, Tail, Capacity;
+            int CountToTransfer;
+            int CountPerTime, StartFrom;
             byte TempCountPerTime;
 
             TAccessRecords tempRecs = new TAccessRecords();
@@ -2817,16 +2988,16 @@ namespace PerioTCPRdr
             tempRecs.raDeviceRecs = new TOneRecord[0];
             TAccessRecords notConfRecs = new TAccessRecords();
             notConfRecs.Count = 0;
-            notConfRecs.raDeviceRecs = new TOneRecord[0];            
+            notConfRecs.raDeviceRecs = new TOneRecord[0];
             string CardId;
 
             Recs = tempRecs;
             try
             {
                 iErr = tcpGetHeadTailCapacity(out Head, out Tail, out Capacity);
-                if (iErr == 0)            
+                if (iErr == 0)
                 {
-                    if (Head > Tail) 
+                    if (Head > Tail)
                         CountToTransfer = (Head - Tail);
                     else
                         CountToTransfer = (Capacity - Tail + Head);
@@ -2834,44 +3005,44 @@ namespace PerioTCPRdr
                     StartFrom = Tail;
                     do
                     {
-                        if ((CountToTransfer - tempRecs.Count) >= CountPerTime) 
-                            TempCountPerTime= (byte)(CountPerTime);
+                        if ((CountToTransfer - tempRecs.Count) >= CountPerTime)
+                            TempCountPerTime = (byte)(CountPerTime);
                         else
-                            TempCountPerTime= (byte)(CountToTransfer - tempRecs.Count);
+                            TempCountPerTime = (byte)(CountToTransfer - tempRecs.Count);
 
                         SendData[0] = TempCountPerTime;
                         iErr = ExecuteCmd(3, // CmdNo
                             30, // SubCmdNo
                             30, // Acknowledge
                             1,  // DataLen
-                            SendData,out RecData // SelectTimeOut
+                            SendData, out RecData // SelectTimeOut
                             );
                         if (iErr == 0)
                         {
                             notConfRecs.Count = RecData[0];
-                            Array.Resize(ref notConfRecs.raDeviceRecs,(byte)notConfRecs.Count);
+                            Array.Resize(ref notConfRecs.raDeviceRecs, (byte)notConfRecs.Count);
                             for (int i = 0; i < notConfRecs.Count; i++)
                             {
                                 // Card ID
                                 CardId = "";
-                                CardId = prBytesToHex(RecData,(RecordSize * i)+1,7);
-                                notConfRecs.raDeviceRecs[i+TransferredCount].CardID = CardId;
+                                CardId = prBytesToHex(RecData, (RecordSize * i) + 1, 7);
+                                notConfRecs.raDeviceRecs[i + TransferredCount].CardID = CardId;
                                 // Door No
-                                notConfRecs.raDeviceRecs[i+TransferredCount].DoorNo = RecData[(RecordSize*i)+8];
+                                notConfRecs.raDeviceRecs[i + TransferredCount].DoorNo = RecData[(RecordSize * i) + 8];
                                 // Record Type
-                                notConfRecs.raDeviceRecs[i+TransferredCount].RecordType = RecData[(RecordSize*i)+9];
+                                notConfRecs.raDeviceRecs[i + TransferredCount].RecordType = RecData[(RecordSize * i) + 9];
                                 // RFU
                                 // Date Time
-                                notConfRecs.raDeviceRecs[i+TransferredCount].TimeDate
-                                    = prBytesToDateTimeEx(RecData,(RecordSize * i) + 10);
+                                notConfRecs.raDeviceRecs[i + TransferredCount].TimeDate
+                                    = prBytesToDateTimeEx(RecData, (RecordSize * i) + 10);
                             }
                             iErr = ConfirmRecs((byte)notConfRecs.Count);
                             if (iErr == 0)
                             {
-                                 Array.Resize(ref tempRecs.raDeviceRecs,(int)(tempRecs.Count + notConfRecs.Count));
-                                 for (uint i = tempRecs.Count; i < (tempRecs.Count + notConfRecs.Count); i++)
-                                   tempRecs.raDeviceRecs[i] = notConfRecs.raDeviceRecs[i-tempRecs.Count];
-                                 tempRecs.Count = tempRecs.Count + notConfRecs.Count;
+                                Array.Resize(ref tempRecs.raDeviceRecs, (int)(tempRecs.Count + notConfRecs.Count));
+                                for (uint i = tempRecs.Count; i < (tempRecs.Count + notConfRecs.Count); i++)
+                                    tempRecs.raDeviceRecs[i] = notConfRecs.raDeviceRecs[i - tempRecs.Count];
+                                tempRecs.Count = tempRecs.Count + notConfRecs.Count;
                             }
                         }
                     } while ((CountToTransfer > tempRecs.Count) && (iErr == 0));
@@ -2912,7 +3083,7 @@ namespace PerioTCPRdr
         }
 
 
-        public int AddBlackList(TBlackList rBlackList, out uint IndexNum , Boolean IfExistEdit = false)
+        public int AddBlackList(TBlackList rBlackList, out uint IndexNum, Boolean IfExistEdit = false)
         {
             TPerson rPerson = new TPerson();
             int iErr = 0, lclErr = 0;
@@ -2957,7 +3128,7 @@ namespace PerioTCPRdr
         public int DeleteBlacklistWithCardID(string CardID, out uint IndexNum)
         {
             TPerson rPerson = new TPerson();
-            int iErr = 0, lclErr=0;
+            int iErr = 0, lclErr = 0;
             IndexNum = 0;
 
             try
@@ -2967,7 +3138,7 @@ namespace PerioTCPRdr
                 switch (lclErr)
                 {
                     case 0:
-                        if (iErr  != 0)
+                        if (iErr != 0)
                             SaveLogFile("DeleteWhitelistWithCardID", "Error : " + lclErr.ToString());
                         break;
                     case 51:
@@ -3029,7 +3200,7 @@ namespace PerioTCPRdr
             try
             {
 
-               iErr = tcpEditWhitelistWithCardID(rPerson, out IndexNum);
+                iErr = tcpEditWhitelistWithCardID(rPerson, out IndexNum);
             }
             catch (Exception e)
             {
@@ -3047,18 +3218,18 @@ namespace PerioTCPRdr
             return AddWhitelist(rPerson, out InxNm, IfExistEdit);
         }
 
-        public int AddWhitelist(TPerson rPerson,out uint IndexNum, Boolean IfExistEdit = false)
+        public int AddWhitelist(TPerson rPerson, out uint IndexNum, Boolean IfExistEdit = false)
         {
-            int iErr=0 ,lclErr = 0;
+            int iErr = 0, lclErr = 0;
             IndexNum = 0;
             try
             {
-                lclErr = IsCardIDExistInWhitelistX(rPerson.CardID,out IndexNum);
+                lclErr = IsCardIDExistInWhitelistX(rPerson.CardID, out IndexNum);
 
                 switch (lclErr)
                 {
                     case 0:
-                        iErr = tcpAddWhitelist(rPerson,out IndexNum);
+                        iErr = tcpAddWhitelist(rPerson, out IndexNum);
                         //if (iErr <> 0) then
                         //    LogDebug('AddWhitelist(*)','Error  ('+IntToStr(iErr)+') ',0);
                         break;
@@ -3066,7 +3237,7 @@ namespace PerioTCPRdr
                         iErr = lclErr;
                         //LogDebug('AddWhitelist','CardID Exists <'+rPerson.CardID+'>  ',0);
                         if (IfExistEdit)
-                            iErr = EditWhitelistWithCardID(rPerson,out IndexNum);
+                            iErr = EditWhitelistWithCardID(rPerson, out IndexNum);
                         break;
                     default:
                         //LogDebug('AddWhitelist','Error  ('+IntToStr(lclErr)+') ',0);
@@ -3081,14 +3252,14 @@ namespace PerioTCPRdr
             }
             return iErr;
         }
-       
-        public int GetWhitelistWithCardID(string CardID,out TPerson rPerson)
+
+        public int GetWhitelistWithCardID(string CardID, out TPerson rPerson)
         {
             uint InxNm;
-            return tcpGetWhitelistWithCardID(CardID,out rPerson, out InxNm);
+            return tcpGetWhitelistWithCardID(CardID, out rPerson, out InxNm);
         }
 
-        public int GetWhitelistWithCardID(string CardID,out TPerson rPerson, out uint IndexNum)
+        public int GetWhitelistWithCardID(string CardID, out TPerson rPerson, out uint IndexNum)
         {
             return tcpGetWhitelistWithCardID(CardID, out rPerson, out IndexNum);
         }
@@ -3099,9 +3270,9 @@ namespace PerioTCPRdr
             return tcpEditWhitelistWithCardID(rPerson, out InxNm);
         }
 
-        public int EditWhitelistWithCardID(TPerson rPerson,out uint IndexNum)
+        public int EditWhitelistWithCardID(TPerson rPerson, out uint IndexNum)
         {
-            return tcpEditWhitelistWithCardID(rPerson,out IndexNum);
+            return tcpEditWhitelistWithCardID(rPerson, out IndexNum);
         }
 
         public int DeleteWhitelistWithCardID(string CardID)
@@ -3126,7 +3297,7 @@ namespace PerioTCPRdr
                         //    LogDebug('DeleteWhitelistWithCardID','Error  ('+IntToStr(lclErr)+') ',0);
                         break;
                     case 51:
-                        iErr = tcpDeleteWhitelistWithCardID(CardID,out IndexNum);
+                        iErr = tcpDeleteWhitelistWithCardID(CardID, out IndexNum);
                         //if (iErr <> 0) then
                         //    LogDebug('DeleteWhitelistWithCardID','Error  ('+IntToStr(iErr)+') ',0);
                         break;
@@ -3148,12 +3319,12 @@ namespace PerioTCPRdr
         public Boolean IsCardIDExistInWhitelist(string CardID)
         {
             uint InxNm;
-            return (tcpIsCardIDExistInWhitelist(CardID,out InxNm)==0);
+            return (tcpIsCardIDExistInWhitelist(CardID, out InxNm) == 0);
         }
 
-        public Boolean IsCardIDExistInWhitelist(string CardID,out uint IndexNum)
+        public Boolean IsCardIDExistInWhitelist(string CardID, out uint IndexNum)
         {
-            return (tcpIsCardIDExistInWhitelist(CardID,out IndexNum)==0);
+            return (tcpIsCardIDExistInWhitelist(CardID, out IndexNum) == 0);
         }
 
         public int IsCardIDExistInWhitelistX(string CardID)
@@ -3166,7 +3337,7 @@ namespace PerioTCPRdr
         {
             return tcpIsCardIDExistInWhitelist(CardID, out IndexNum);
         }
-        
+
         public int GetWhitelistCardIDCount()
         {
             uint Cnt;
@@ -3176,19 +3347,19 @@ namespace PerioTCPRdr
                 return -1;
         }
 
-        public Boolean ReadRecords(uint StartFrom,uint HowMany,out TAccessRecords Recs)// // CMD 3.29
+        public Boolean ReadRecords(uint StartFrom, uint HowMany, out TAccessRecords Recs)// // CMD 3.29
         {
-            return (tcpReadRecords(StartFrom,HowMany,out Recs)==0);
+            return (tcpReadRecords(StartFrom, HowMany, out Recs) == 0);
         }
 
         public Boolean TransferRecords(out TAccessRecords Recs)// // CMD 3.29
         {
-            return (tcpTransferRecords(out Recs)==0);
+            return (tcpTransferRecords(out Recs) == 0);
         }
 
         public Boolean ClearWhitelist()
         {
-            return (tcpClearWhitelist()==0);
+            return (tcpClearWhitelist() == 0);
         }
 
         public Boolean SetAppFactoryDefault(Boolean Reboot)
@@ -3208,7 +3379,7 @@ namespace PerioTCPRdr
 
         public Boolean GetTreeNode(uint Address, out Ttree_Node Node)
         {
-            return (tcpGetTreeNode(Address, out Node ) == 0);
+            return (tcpGetTreeNode(Address, out Node) == 0);
         }
 
         public Boolean SetTreeNode(Ttree_Node Node)
@@ -3216,6 +3387,16 @@ namespace PerioTCPRdr
             return (tcpSetTreeNode(Node) == 0);
         }
 
+        public Boolean SetStatusMode(byte StatusMode, byte StatusModeType)
+        {
+            //return (tcpGetStatusMode(out StatusMode, out StatusModeType) == 0);
+            return (tcpSetStatusMode(StatusMode, StatusModeType) == 0);
+        }
+
+        public Boolean GetStatusMode(out byte StatusMode, out byte StatusModeType)
+        {
+            return (tcpGetStatusMode(out StatusMode, out StatusModeType) == 0);            
+        }
 
         public Boolean GetAppGeneralSettings(out TAccessGeneralSettings rSettings)
         {
@@ -3297,12 +3478,8 @@ namespace PerioTCPRdr
             return (tcpSetBellTable(DayNo, BellTable) == 0);
         }
 
-        public Boolean GetRegularInfo(out DateTime deviceDate, out Byte headTail, out uint head, out  uint tail, out uint Capacity)
-        {
-            return (tcpGetRegularInfo(out deviceDate, out headTail, out head, out tail, out Capacity) == 0);
-        }
 
-        public Boolean GetOutOfServiceHolidayList(out THolidays Holidays )
+        public Boolean GetOutOfServiceHolidayList(out THolidays Holidays)
         {
             return (tcpGetOutOfServiceHolidayList(out Holidays) == 0);
         }
@@ -3323,10 +3500,10 @@ namespace PerioTCPRdr
         public Boolean SetHGSSettings(THGS_Settings HGS_Settings)
         {
             return (tcpSetHGSSettings(HGS_Settings) == 0);
-        
+
         }
 
-        public Boolean GetHGSDaireParkHak(uint rDaire , out Byte rHak )
+        public Boolean GetHGSDaireParkHak(uint rDaire, out Byte rHak)
         {
             return (tcpGetHGSDaireParkHak(rDaire, out rHak) == 0);
         }
@@ -3334,9 +3511,22 @@ namespace PerioTCPRdr
         public Boolean SetHGSDaireParkHak(Byte rHak, uint rDaire)
         {
             return (tcpSetHGSDaireParkHak(rDaire, rHak) == 0);
-        
+
         }
 
+        public Boolean SetPersonTZList(string CardID, TPersTZList PersTZList)
+        {
+            //Result := (tcpGetPersonTZList(CardID, PersTZList)=0);
+            //return (tcpGetPersonTZList(CardID, out PersTZList) == 0);
+            return (tcpSetPersonTZList(CardID, PersTZList) == 0);
+        }
+
+
+        public Boolean GetPersonTZList(string CardID, out TPersTZList PersTZList  ) 
+        {
+            //Result := (tcpGetPersonTZList(CardID, PersTZList)=0);
+            return (tcpGetPersonTZList(CardID, out PersTZList) == 0);
+        }
         
 
 

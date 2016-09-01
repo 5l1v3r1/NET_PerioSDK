@@ -101,6 +101,12 @@
     <Compile Include="frmPersonCommand.Designer.cs">
       <DependentUpon>frmPersonCommand.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmPersonTZlist.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPersonTZlist.Designer.cs">
+      <DependentUpon>frmPersonTZlist.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmTopluAktarim.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -154,6 +160,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmPersonCommand.resx">
       <DependentUpon>frmPersonCommand.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPersonTZlist.resx">
+      <DependentUpon>frmPersonTZlist.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTopluAktarim.resx">
       <DependentUpon>frmTopluAktarim.cs</DependentUpon>

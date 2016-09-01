@@ -781,16 +781,20 @@ namespace TCPReader
         {
             if (rdr.Connected)
             {
-                int Head;
-                int Tail; 
-                int Capacity;
+                uint Head;
+                uint Tail;
+                byte HeadTail;
+                uint Capacity;
+                Nullable<DateTime> deviceDate;
+                Nullable<DateTime> doorOpenDt;
+                Boolean doorOpen;
 
-                if (rdr.GetHeadTailCapacity(out Head,out  Tail,out Capacity))
+                if (rdr.GetRegularInfo(out deviceDate, out HeadTail, out Head, out Tail, out Capacity, out doorOpen, out doorOpenDt))
                 {
                     edtHead.Value = Head;
                     edtTail.Value = Tail;
                     lblCapacity.Text = "Kapasite : " + Capacity.ToString();
-                    AddLog("Head -Tail Bilgisi getirildi.");
+                    AddLog("Head -Tail Bilgisi getirildi. Cihaz saati:" + deviceDate.ToString() );
                 } 
                 else 
                     AddLog("Head -Tail Bilgisi getirilemedi."); 
@@ -2091,21 +2095,21 @@ namespace TCPReader
                     edtUygulamaAyariGirisTipi.SelectedIndex = rSettings.InputSettings.InputType;
                     edtUygulamaayarlariGecisSuresi.Value = rSettings.InputSettings.InputDurationTimeout;
 
-
                     if (rSettings.TimeAccessConstraintEnabled == true)
-                    { edtGenelAyarlarZamanKisitTablosuEtkin.Checked = true; }
-                    else { edtGenelAyarlarZamanKisitTablosuEtkin.Checked = false; }
+                        edtGenelAyarlarZamanKisitTablosuEtkin.Checked = true; 
+                    else
+                        edtGenelAyarlarZamanKisitTablosuEtkin.Checked = false;
 
-
+                    cbPersTZMode.SelectedIndex = rSettings.PersonelTimeZoneMode;
                     AddLog("Uygulama genel bilgileri getirildi.");
+                    cbPersTZMode_SelectedIndexChanged(this, e);
                 }
-                else { AddLog("Uygulama genel bilgileri getirilemedi."); }
+                else
+                    AddLog("Uygulama genel bilgileri getirilemedi."); 
 
             }
-            else {
-                AddLog("Cihazla bağlantı yok.");
-            
-            }
+            else
+                AddLog("Cihazla bağlantı yok.");            
 
         }
 
@@ -2123,7 +2127,7 @@ namespace TCPReader
                 rSettings.InputSettings.InputDurationTimeout=(ushort)edtUygulamaayarlariGecisSuresi.Value;
                 rSettings.InputSettings.InputType=(byte)edtUygulamaAyariGirisTipi.SelectedIndex;
                 if (edtGenelAyarlarZamanKisitTablosuEtkin.Checked==true){rSettings.TimeAccessConstraintEnabled=true;} else {rSettings.TimeAccessConstraintEnabled=false;}
-
+                rSettings.PersonelTimeZoneMode = (byte)cbPersTZMode.SelectedIndex;
 
                 if (rdr.SetAppGeneralSettings(rSettings)==true){AddLog("Uygulama genel bilgileri cihaza gönderilid.");} else {AddLog("Uygulama bilgileri cihaza gönderilemedi.");}
 
@@ -4413,6 +4417,106 @@ namespace TCPReader
         private void button45_Click(object sender, EventArgs e)
         {
             //yazılacak
+        }
+
+        private void cbPersTZMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            switch (cbPersTZMode.SelectedIndex)
+            {
+                case 0:
+                    {
+                        lblInputDuration.Visible = false;
+                        edtUygulamaayarlariGecisSuresi.Visible = false;
+                        break;
+                    }
+
+                case 1:
+                    {
+                        lblInputDuration.Text = "Buton Basma Süresi";
+                        lblInputDuration.Visible = true;
+                        edtUygulamaayarlariGecisSuresi.Visible = true;
+                        break;
+                    }
+
+                case 2:
+                    {
+                        lblInputDuration.Text = "Turnike dönüş bekleme Süresi";
+                        lblInputDuration.Visible = true;
+                        edtUygulamaayarlariGecisSuresi.Visible = true;
+                        break;
+                    }
+
+                case 3:
+                    {
+                        lblInputDuration.Text = "Kapı açık kalma bekleme Süresi";
+                        lblInputDuration.Visible = true;
+                        edtUygulamaayarlariGecisSuresi.Visible = true;
+                        break;
+                    }
+
+                default:
+                    break;
+            }
+
+        }
+
+        private void btnPersTZMode_Click(object sender, EventArgs e)
+        {
+
+            frmPersonTZlist personTzList = new frmPersonTZlist(rdr);
+            personTzList.ShowDialog();
+
+        }
+
+        private void btnSendStatusMode_Click(object sender, EventArgs e)
+        {
+            Byte StatusMode, StatusModeType ;
+
+            if (rdr.fwAppType != TfwAppType.fwPDKS )
+                MessageBox.Show("Sadece PDKS FW ile çalışır");
+            else
+            {
+                if (rdr.Connected)
+                {
+                    StatusMode = (byte)edtStatusMode.Value;
+                    StatusModeType = (byte)edtStatusModeType.Value;
+
+                    if (rdr.SetStatusMode(StatusMode, StatusModeType))
+                        AddLog("bilgiler gönderildi");
+                    else
+                        AddLog("Bilgiler gönderilemedi");
+
+
+                }
+                else
+                    AddLog("Cihazla bağlantınız yok");
+            }
+
+        }
+
+        private void btnGetStatusMode_Click(object sender, EventArgs e)
+        {
+            Byte StatusMode, StatusModeType;
+
+            if (rdr.fwAppType != TfwAppType.fwPDKS)
+                MessageBox.Show("Sadece PDKS FW ile çalışır");
+            else
+            {
+                if (rdr.Connected)
+                {
+                    if (rdr.GetStatusMode(out StatusMode, out StatusModeType))
+                    {
+                        edtStatusMode.Value = StatusMode;
+                        edtStatusModeType.Value = StatusModeType;
+                        AddLog("Bilgiler getirildi");
+                    }
+                    else
+                        AddLog("Bilgiler getirilemedi");
+                }
+                else
+                    AddLog("Cihazla bağlantınız yok");
+            }
         }
     }
 }

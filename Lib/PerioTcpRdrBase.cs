@@ -369,6 +369,7 @@ namespace PerioTcpRdrBase
         public TInputSettings InputSettings;
         public TAccessMode AccessMode;
         public Boolean TimeAccessConstraintEnabled;
+        public Byte PersonelTimeZoneMode;
     }
 
 
@@ -2253,6 +2254,8 @@ namespace PerioTcpRdrBase
             byte[] comBuffer = new byte[msg.Length / 2];
             for (int i = 0; i < msg.Length; i += 2)
                 comBuffer[i / 2] = (byte)Convert.ToByte(msg.Substring(i, 2), 16);
+
+
             return comBuffer;
         }
 
@@ -2623,7 +2626,7 @@ namespace PerioTcpRdrBase
 
     public partial class TCustomTcpRdr : TcpRdrBase
     {
-
+        // eriþim 
 
         public int tcpSetWeekDayNames(TWeekDays WeekDays)
         {
@@ -2650,7 +2653,6 @@ namespace PerioTcpRdrBase
             return iErr;
         
         }
-
 
         public int tcpGetWeekDayNames(out TWeekDays WeekDays)
         {
@@ -3952,6 +3954,74 @@ namespace PerioTcpRdrBase
 
         }
 
+        protected int tcpGetRegularInfo(out Nullable<DateTime> deviceDate, out Byte headTail, out uint head, out uint tail, out uint Capacity, out Boolean DoorOpen, out Nullable<DateTime> DoorOpenDT) 
+        {
+            int iErr = 0;
+            byte[] SendData = new byte[512];
+            byte[] RecData = new byte[512];
+            DoorOpen = false;
+            head = 0;
+            tail = 0;
+            Capacity = 0;
+            headTail = 0;
+            deviceDate = DateTime.Now;
+            DoorOpenDT = DateTime.Now;
+            try
+            {
+                iErr = ExecuteCmd(3, // CmdNo
+                        17, // SubCmdNo
+                        17, // Acknowledge
+                        0, // DataLen
+                        SendData, out RecData, 100 // SelectTimeOut
+                        );
+                if (iErr == 0)
+                {
+
+                    try
+                    {
+                        deviceDate = new DateTime(RecData[5] + 2000, RecData[4], RecData[3], RecData[0], RecData[1], RecData[2], 0);
+                    }
+                    catch (Exception)
+                    {
+
+                        deviceDate = new DateTime(2000, 1, 1, 0, 0, 0, 0);
+                    }
+                    
+                    //                   
+                    //      deviceDate := EncodeDateTime(RecData[5]+2000,RecData[4],
+                    //                    RecData[3],RecData[0],RecData[1],
+                    //                    RecData[2],0);
+
+                    headTail= RecData[6];
+                    head= (uint)RecData[7] + (uint)(RecData[8] * 256) + (uint)(RecData[9] * 256 * 256);
+                    tail= (uint)RecData[10] + (uint)(RecData[11] * 256) + (uint)(RecData[12] * 256 * 256);
+                    Capacity= (uint)RecData[13] + (uint)(RecData[14] * 256) + (uint)(RecData[15] * 256 * 256);
+                    DoorOpen= ((uint)RecData[16]) == 1;
+
+
+
+                    try
+                    {
+                        DoorOpenDT = new DateTime(RecData[17] + 2000, RecData[18], RecData[19], RecData[20], RecData[21], RecData[22], 0);
+                    }
+                    catch (Exception)
+                    {
+
+                        DoorOpenDT = new DateTime(2000, 1, 1, 0, 0, 0, 0);
+                    }
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                iErr = TErrors.EXCEPTION;
+                SaveLogFile(MethodBase.GetCurrentMethod(), e);
+            }
+            return iErr;
+
+        }
+
         protected int tcpGetHeadTailCapacity(out int Head, out int Tail, out int Capacity) // CMD 2.22
         {
             int iErr = 0;
@@ -4202,15 +4272,7 @@ namespace PerioTcpRdrBase
         {
             return (DoDisConnect() == 0);
         }
-
-
-
-
-
         
-
-      
-
 
         public Boolean SetWebPassword(string WebPassword)
         {
@@ -4419,6 +4481,10 @@ namespace PerioTcpRdrBase
 
         /*SetMfrKeyList*/
 
+        public Boolean GetRegularInfo(out Nullable<DateTime> deviceDate , out Byte headTail, out uint head, out uint tail, out uint Capacity, out Boolean DoorOpen , out Nullable<DateTime> DoorOpenDT)
+        {         
+            return (tcpGetRegularInfo(out deviceDate, out headTail, out head, out tail, out  Capacity, out DoorOpen, out DoorOpenDT)==0);
+        }
 
         public Boolean GetHeadTailCapacity(out int Head,out int Tail,out int Capacity)
         {
