@@ -133,7 +133,7 @@ namespace TCPReader
 
             MethodInvoker method = delegate
             {
-                AddLog("Okunulan Kart ID [" + e.CardID + "]." + " IP: " + s.IP +" device Id: " + s.DeviceID + " device name: " + s.DeviceName);
+                AddLog("Okunulan Kart ID [" + e.CardID + " Length " + e.CardLength.ToString()  +" ]." + " IP: " + s.IP +" device Id: " + s.DeviceID + " device name: " + s.DeviceName);
 
                /* if (e.CardID == "1967327B000000")
                     rdr.SetBeepRelayAndSecreenMessage(0, 0, "gecerli kart", "gecerli kart", "tunc gulec", "", "", "", "", 5, 15, 0, 5, 35, 0, (byte)ekranMesajiOnlieSatir3x.Value, (byte)ekranMesajiOnlieSatir3y.Value, 0, (byte)ekranMesajiOnlieSatir4x.Value, (byte)ekranMesajiOnlieSatir4y.Value, 0, (byte)ekranMesajiOnlieSatir5x.Value, (byte)ekranMesajiOnlieSatir5x.Value, 0, 2, 2, 20, 2000, 2000, 2000, true);

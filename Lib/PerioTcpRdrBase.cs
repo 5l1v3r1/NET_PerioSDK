@@ -547,9 +547,11 @@ namespace PerioTcpRdrBase
     public class RxCardIDArgs : EventArgs
     {
         private string fCardID;
-        public RxCardIDArgs(string strCardID)
+        private int fCardLength;
+        public RxCardIDArgs(string strCardID,int iCardLength)
         {
             fCardID = strCardID;
+            fCardLength = iCardLength;
         }
         public string CardID
         {
@@ -558,8 +560,15 @@ namespace PerioTcpRdrBase
                 return fCardID;
             }
         }
+        public int CardLength
+        {
+            get
+            {
+                return fCardLength;
+            }
+}
     }
-    
+
 
     public delegate void RxInputText(object source, RxInputTextArgs e);
     public class RxInputTextArgs : EventArgs
@@ -1626,6 +1635,7 @@ namespace PerioTcpRdrBase
                 byte[] ReadRxBuffer = new byte[512];
                 byte[] RecData = new byte[512];
                 string CardID;
+                int CardLength;
                 string strData;
                 byte SerialNo;
                 Boolean TurnSucces;
@@ -1670,10 +1680,10 @@ namespace PerioTcpRdrBase
                                         RecData[i] = RxBuffer.uaBuff[ fRx_Data_Start_Pos + i];
 
                                     CardID = prBytesToHex(RecData,3,7);
-
+                                    CardLength = RecData[10];
                                     if (OnRxCardID != null)
                                     {
-                                        OnRxCardID(this, new RxCardIDArgs(CardID));
+                                        OnRxCardID(this, new RxCardIDArgs(CardID, CardLength));
                                     }
                                 }
                                 if (RxBuffer.Rx_Acknowledge == 55)
